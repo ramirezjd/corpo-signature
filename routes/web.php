@@ -19,4 +19,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
+Route::controller(App\Http\Controllers\DepartamentoController::class)->group(function () {
+    Route::get('/departamentos', 'index');
+    Route::get('/departamentos/create', 'create');
+    Route::post('/departamentos', 'store');
+    Route::get('/departamentos/{id}', 'show');
+    Route::get('/departamentos/{id}/edit', 'edit');
+    Route::put('/departamentos/{id}', 'update');
+    Route::delete('/departamentos/{id}', 'destroy');
+});
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
