@@ -14,6 +14,11 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link href="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}" rel="stylesheet" type="text/css" media="screen" />
     <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ asset('assets/plugins/bootstrap-tag/bootstrap-tagsinput.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/dropzone/css/dropzone.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{{ asset('assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{{ asset('assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" media="screen">
     <link class="main-stylesheet" href="{{ asset('pages/css/themes/light.css') }}" rel="stylesheet" type="text/css" />
     <style>
       .icon-thumbnail{
@@ -31,7 +36,7 @@
       <!-- END SIDEBAR MENU TOP TRAY CONTENT-->
       <!-- BEGIN SIDEBAR MENU HEADER-->
       <div class="sidebar-header">
-        <img src="assets/img/logo.png" alt="logo" class="brand" data-src="{{ asset('assets/img/logo.png') }}" data-src-retina="{{ asset('assets/img/logo.png') }}" width="160" height="60">
+        <img src="{{ asset('assets/img/logo.png') }}" alt="logo" class="brand" data-src="{{ asset('assets/img/logo.png') }}" data-src-retina="{{ asset('assets/img/logo.png') }}" width="160" height="60">
       </div>
       <!-- END SIDEBAR MENU HEADER-->
       <!-- START SIDEBAR MENU -->
@@ -1294,7 +1299,7 @@
 
     <!-- BEGIN VENDOR JS -->
     <script src="{{ asset('assets/plugins/feather-icons/feather.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/pace/pace.min.js" type="text/javascript') }}"></script>
+    <script src="{{ asset('assets/plugins/pace/pace.min.js ') }}" type="text/javascript"></script>
     <!--  A polyfill for browsers that don't support ligatures: remove liga.js if not needed-->
     <script src="{{ asset('assets/plugins/liga.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
@@ -1307,8 +1312,19 @@
     <script src="{{ asset('assets/plugins/jquery-ios-list/jquery.ioslist.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/jquery-actual/jquery.actual.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.min.js') }}"></script>
-    <script type="{{ asset('text/javascript" src="assets/plugins/select2/js/select2.full.min.js') }}"></script>
-    <script type="{{ asset('text/javascript" src="assets/plugins/classie/classie.js') }}"></script>
+    <script src="{{ asset('assets/plugins/select2/js/select2.full.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/classie/classie.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/dropzone/dropzone.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/jquery-autonumeric/autoNumeric.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/jquery-inputmask/jquery.inputmask.min.js') }}" type="text/javascript" ></script>
+    <script src="{{ asset('assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <!-- <script src="{{ asset('assets/plugins/quill/quill.min.js') }}" type="text/javascript"></script> -->
+    <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.bundle.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.jquery.min.js') }}"></script>
+    <script src="{{ asset('assets/plugins/handlebars/handlebars-v4.0.5.js') }}"></script>
     <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
     <!-- BEGIN CORE TEMPLATE JS -->

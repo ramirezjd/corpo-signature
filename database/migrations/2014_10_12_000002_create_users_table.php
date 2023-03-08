@@ -21,10 +21,12 @@ class CreateUsersTable extends Migration
             $table->string('apellidos_usuario', 128);
             $table->string('documento_usuario', 16);
             $table->string('email')->unique();
+            $table->string('base64')->nullable();
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();
             $table->timestamps();
+            $table->softDeletes();
             
             //Referencia del departamento al que pertenece
             $table->foreign('departamento_id')->references('id')->on('departamentos');

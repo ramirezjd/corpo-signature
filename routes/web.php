@@ -29,4 +29,14 @@ Route::controller(App\Http\Controllers\DepartamentoController::class)->group(fun
     Route::delete('/departamentos/{id}', 'destroy');
 });
 
+Route::controller(App\Http\Controllers\UserController::class)->group(function () {
+    Route::get('/usuarios', 'index');
+    Route::get('/usuarios/create', 'create');
+    Route::post('/usuarios', 'store');
+    Route::get('/usuarios/{id}', 'show');
+    Route::get('/usuarios/{id}/edit', 'edit');
+    Route::put('/usuarios/{id}', 'update');
+    Route::delete('/usuarios/{id}', 'destroy');
+});
+
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

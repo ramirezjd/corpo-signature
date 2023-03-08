@@ -122,7 +122,6 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
-        
         $departamento = Departamento::findOrFail($id);
         $departamento->delete();
         return redirect('/departamentos');

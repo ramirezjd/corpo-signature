@@ -16,7 +16,7 @@
 
         <div class="row">
             <div class="col-md-8 my-auto">
-                <h1>Crear Nuevo Departamento</h1>
+                <h1>Editar Departamento</h1>
             </div>
             <div class="col-md-4 text-right my-auto">
                 <a class="btn btn-primary btn-lg btn-larger" href="/departamentos"> VOLVER</a>
