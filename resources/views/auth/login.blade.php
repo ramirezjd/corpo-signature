@@ -22,7 +22,8 @@
         <h2 class="p-t-25">Bienvenido. <br/> Para crear y firmar documentos</h2>
         <p class="mw-80 m-t-5">Inicia sesion en tu cuenta</p>
         <!-- START Login Form -->
-        <form id="form-login" class="p-t-15" role="form" action="index.html">
+        <form id="form-login" class="p-t-15" role="form" method="POST" action="{{ route('login') }}">
+          @csrf
           <!-- START Form Control-->
           <div class="form-group form-group-default">
             <label>E-mail</label>
@@ -79,15 +80,7 @@
           <!-- END Form Control-->
         </form>
         <!--END Login Form-->
-        <div class="pull-bottom sm-pull-bottom">
-          <div class="m-b-30 p-r-80 sm-m-t-20 sm-p-r-15 sm-p-b-20 clearfix">
-            <div class="col-sm-9 no-padding m-t-10">
-              <p class="small-text normal hint-text">
-                ©2019-2020 All Rights Reserved. Pages® is a registered trademark of Revox Ltd. <a href="">Cookie Policy</a>, <a href=""> Privacy and Terms</a>.
-              </p>
-            </div>
-          </div>
-        </div>
+        
       </div>
     </div>
     <!-- END Login Right Container-->

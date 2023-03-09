@@ -18,25 +18,26 @@ Route::get('/', function () {
 });
 
 Auth::routes();
-
-Route::controller(App\Http\Controllers\DepartamentoController::class)->group(function () {
-    Route::get('/departamentos', 'index');
-    Route::get('/departamentos/create', 'create');
-    Route::post('/departamentos', 'store');
-    Route::get('/departamentos/{id}', 'show');
-    Route::get('/departamentos/{id}/edit', 'edit');
-    Route::put('/departamentos/{id}', 'update');
-    Route::delete('/departamentos/{id}', 'destroy');
-});
-
-Route::controller(App\Http\Controllers\UserController::class)->group(function () {
-    Route::get('/usuarios', 'index');
-    Route::get('/usuarios/create', 'create');
-    Route::post('/usuarios', 'store');
-    Route::get('/usuarios/{id}', 'show');
-    Route::get('/usuarios/{id}/edit', 'edit');
-    Route::put('/usuarios/{id}', 'update');
-    Route::delete('/usuarios/{id}', 'destroy');
-});
-
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::middleware(['auth'])->group(function () {
+    Route::controller(App\Http\Controllers\DepartamentoController::class)->group(function () {
+        Route::get('/departamentos', 'index');
+        Route::get('/departamentos/create', 'create');
+        Route::post('/departamentos', 'store');
+        Route::get('/departamentos/{id}', 'show');
+        Route::get('/departamentos/{id}/edit', 'edit');
+        Route::put('/departamentos/{id}', 'update');
+        Route::delete('/departamentos/{id}', 'destroy');
+    });
+
+    Route::controller(App\Http\Controllers\UserController::class)->group(function () {
+        Route::get('/usuarios', 'index');
+        Route::get('/usuarios/create', 'create');
+        Route::post('/usuarios', 'store');
+        Route::get('/usuarios/{id}', 'show');
+        Route::get('/usuarios/{id}/edit', 'edit');
+        Route::put('/usuarios/{id}', 'update');
+        Route::delete('/usuarios/{id}', 'destroy');
+    });
+});
