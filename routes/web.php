@@ -40,4 +40,14 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/usuarios/{id}', 'update');
         Route::delete('/usuarios/{id}', 'destroy');
     });
+
+    Route::controller(App\Http\Controllers\DocumentoController::class)->group(function () {
+        Route::get('/documentos', 'index');
+        Route::get('/documentos/create', 'create');
+        Route::post('/documentos', 'store');
+        Route::get('/documentos/{id}', 'show');
+        Route::get('/documentos/{id}/edit', 'edit');
+        Route::put('/documentos/{id}', 'update');
+        Route::delete('/documentos/{id}', 'destroy');
+    });
 });

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Documento;
+use App\Models\User;
 use Illuminate\Http\Request;
 
 class DocumentoController extends Controller
@@ -14,7 +15,13 @@ class DocumentoController extends Controller
      */
     public function index()
     {
-        //
+        $users = User::all();
+        // $departamentos = Departamento::withTrashed()->get();
+        return view('documentos.index', [
+            'root' => 'Documentos',
+            'page' => '',
+            'users' => $users,
+        ]);
     }
 
     /**
@@ -24,7 +31,12 @@ class DocumentoController extends Controller
      */
     public function create()
     {
-        //
+        $users = User::all();
+        return view('documentos.create', [
+            'root' => 'Documentos',
+            'page' => 'Crear',
+            'users' => $users,
+        ]);
     }
 
     /**
