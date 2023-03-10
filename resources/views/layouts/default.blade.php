@@ -30,6 +30,7 @@
     </style>
   </head>
   <body class="fixed-header menu-pin">
+    <?php $user = Auth::user(); ?>
     <!-- BEGIN SIDEBPANEL-->
     <nav class="page-sidebar" data-pages="sidebar">
       <!-- BEGIN SIDEBAR MENU TOP TRAY CONTENT-->
@@ -55,7 +56,7 @@
             <span class="icon-thumbnail"><i data-feather="users"></i></span>
           </li>
           <li class="">
-            <a href="/usuarios"><span class="title">Documentos</span></a>
+            <a href="/documentos"><span class="title">Documentos</span></a>
             <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
           </li>
         </ul>
@@ -199,7 +200,7 @@
           <!-- END NOTIFICATIONS LIST -->
           <!-- START User Info-->
           <div class="pull-left p-r-10 fs-14 d-lg-inline-block d-none m-l-20">
-            <span class="semi-bold">Apellido</span> <span class="text-color">Nombre</span>
+            <span class="semi-bold">{{ $user->apellidos_usuario }}</span> <span class="text-color">{{ $user->nombres_usuario }}</span>
           </div>
           <div class="dropdown pull-right d-lg-block d-none">
             <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" aria-label="profile dropdown">
@@ -209,11 +210,18 @@
       				</span>
             </button>
             <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
-              <a href="#" class="dropdown-item"><span>Signed in as <br /><b>Nombre Apellido</b></span></a>
+              <a href="#" class="dropdown-item"><span>Signed in as <br /><b>{{ $user->nombres_usuario }} {{ $user->apellidos_usuario }}</b></span></a>
               <div class="dropdown-divider"></div>
               <a href="#" class="dropdown-item">Perfil</a>
               <div class="dropdown-divider"></div>
-              <a href="#" class="dropdown-item">Logout</a>
+              <a class="dropdown-item" href="{{ route('logout') }}"
+              onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                Cerrar Sesion
+              </a>
+
+              <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                  @csrf
+              </form>
             </div>
           </div>
           <!-- END User Info-->
@@ -1321,21 +1329,23 @@
     <script src="{{ asset('assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
-    <!-- <script src="{{ asset('assets/plugins/quill/quill.min.js') }}" type="text/javascript"></script> -->
+    
     <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/handlebars/handlebars-v4.0.5.js') }}"></script>
     <!-- END VENDOR JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
     <!-- BEGIN CORE TEMPLATE JS -->
+    
     <script src="{{ asset('pages/js/pages.js') }}"></script>
     <!-- END CORE TEMPLATE JS -->
     <!-- BEGIN PAGE LEVEL JS -->
-    <script src="{{ asset('assets/js/scripts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/scripts.js" type="text/javascript') }}"></script>
     <!-- END PAGE LEVEL JS -->
     <!-- END CORE TEMPLATE JS -->
     <!-- BEGIN PAGE LEVEL JS -->
-    <script src="{{ asset('assets/js/scripts.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/js/form_elements.js" type="text/javascript') }}"></script>
+    <script src="{{ asset('assets/js/scripts.js" type="text/javascript') }}"></script>
     <!-- END PAGE LEVEL JS -->
   </body>
 </html>
