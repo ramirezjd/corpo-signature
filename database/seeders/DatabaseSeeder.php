@@ -15,5 +15,6 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(DepartamentosSeeder::class);
         $this->call(AdminUserSeeder::class);
+        $this->call(FirmasSeeder::class);
     }
 }
