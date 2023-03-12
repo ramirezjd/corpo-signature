@@ -4,7 +4,10 @@ namespace App\Http\Controllers;
 
 use App\Models\Documento;
 use App\Models\User;
+use App\Models\Firma;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
+use PDF;
 
 class DocumentoController extends Controller
 {
@@ -47,7 +50,23 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $usersIds = request('usersarray');
+        $usersArray = explode(" ", $usersIds);
+        $usersObjects = User::whereIn('id', $usersArray)->get();
+        foreach($usersObjects as $user ) {
+            // $user['firma'] = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
+            $firma = Firma::where('user_id', 3)->orderBy('created_at', 'desc')->first();
+            $signaturePath = Storage::url($firma->img_path);
+            $user['signaturePath'] = $signaturePath;
+        }
+        $body = request('document_body');
+        
+        $pdf = PDF::loadView('documentos.documentopdf',[
+            'body' => $body,
+            'users' => $usersObjects,
+        ]);
+
+        return $pdf->download(uniqid() .'.pdf');
     }
 
     /**
@@ -90,8 +109,19 @@ class DocumentoController extends Controller
      * @param  \App\Models\Documento  $documento
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Documento $documento)
+    public function destroy($id)
     {
         //
     }
+
+    
+    public function downloadPdf($id)
+    {
+        $pdf = PDF::loadView('documentos.documentopdf',[
+            'id' => $id,
+        ]);
+
+        return $pdf->download($id . uniqid() .'.pdf');
+    }
+    
 }

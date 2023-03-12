@@ -49,5 +49,6 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/documentos/{id}/edit', 'edit');
         Route::put('/documentos/{id}', 'update');
         Route::delete('/documentos/{id}', 'destroy');
+        Route::get('/documentos/{id}/download', 'downloadPdf');
     });
 });
