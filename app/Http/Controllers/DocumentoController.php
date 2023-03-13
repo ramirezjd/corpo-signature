@@ -54,8 +54,7 @@ class DocumentoController extends Controller
         $usersArray = explode(" ", $usersIds);
         $usersObjects = User::whereIn('id', $usersArray)->get();
         foreach($usersObjects as $user ) {
-            // $user['firma'] = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
-            $firma = Firma::where('user_id', 3)->orderBy('created_at', 'desc')->first();
+            $firma = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
             $signaturePath = Storage::url($firma->img_path);
             $user['signaturePath'] = $signaturePath;
         }

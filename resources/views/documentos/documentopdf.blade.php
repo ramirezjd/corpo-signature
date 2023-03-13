@@ -56,6 +56,9 @@
     .w-50 {
         width: 50%;
     }
+    .w-33{        
+        width: 33%;
+    }
 
     .w-30 {
         width: 30%;
@@ -163,20 +166,23 @@
         <div style="clear: both;"></div>
     </div>
     <div class="table-section bill-tbl w-100 text-center mt-10">
-        
+        @php $width = 0; @endphp
         @foreach ($users as $user)
-            @if ($loop->index%3==0)
-                <div class="add-detail mt-30">
+
+            @if ($width==0)
+                <div class="add-detail  mt-30">
             @endif
-                    <div class="w-30 float-left">
+                    <div class="w-33 float-left">
                         <label>Firma</label><br>
                         <img src="{{public_path($user->signaturePath)}}" width="200" height="100"  alt=""><br>
-                        <span>{{$user->apellidos_usuario}} {{$user->nombres_usuario}}</span><br>
+                        <span>{{$user->apellidos_usuario}}<br>{{$user->nombres_usuario}}</span><br>
                         <span>{{$user->documento_usuario}}</span><br>
                     </div>
-            @if ($loop->index%2==0 && $loop->index>0)
+                    @php $width += 30; @endphp
+            @if ($width==90)
                     <div style="clear: both;"></div>
                 </div>
+                @php $width = 0; @endphp
             @endif
 
         @endforeach
