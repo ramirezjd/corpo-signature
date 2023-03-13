@@ -56,6 +56,9 @@
     .w-50 {
         width: 50%;
     }
+    .w-33{        
+        width: 33%;
+    }
 
     .w-30 {
         width: 30%;
@@ -167,12 +170,12 @@
         @foreach ($users as $user)
 
             @if ($width==0)
-                <div class="add-detail mt-30">
+                <div class="add-detail  mt-30">
             @endif
-                    <div class="w-30 float-left">
+                    <div class="w-33 float-left">
                         <label>Firma</label><br>
                         <img src="{{public_path($user->signaturePath)}}" width="200" height="100"  alt=""><br>
-                        <span>{{$user->apellidos_usuario}} {{$user->nombres_usuario}}</span><br>
+                        <span>{{$user->apellidos_usuario}}<br>{{$user->nombres_usuario}}</span><br>
                         <span>{{$user->documento_usuario}}</span><br>
                     </div>
                     @php $width += 30; @endphp
