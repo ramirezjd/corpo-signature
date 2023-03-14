@@ -60,6 +60,10 @@
             <a href="/documentos"><span class="title">Documentos</span></a>
             <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
           </li>
+          <li class="">
+            <a href="/cabeceras"><span class="title">Cabeceras</span></a>
+            <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
+          </li>
         </ul>
         <div class="clearfix"></div>
       </div>

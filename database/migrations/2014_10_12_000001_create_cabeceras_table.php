@@ -15,6 +15,7 @@ class CreateCabecerasTable extends Migration
     {
         Schema::create('cabeceras', function (Blueprint $table) {
             $table->id();
+            $table->string('nombre_cabecera', 128);
             $table->string('cuerpo_cabecera', 512);
             $table->string('img_path', 256)->nullable();
             $table->timestamps();

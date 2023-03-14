@@ -31,6 +31,20 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="form-group form-group-default required ">
+                        <label>Membrete:</label>
+                        <select name="id_cabecera" id="id_cabecera" class="full-width form-element " data-init-plugin="select2">
+                            <option></option>
+                            @foreach ($cabeceras as $cabecera)
+                                <option value="{{ $cabecera->id }}">{{ $cabecera->nombre_cabecera }}</option>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="form-group form-group-default required ">
                         <label>Solicitar firmas:</label>
                         <select name="id_usuarios" id="id_usuarios" class="full-width"
                             data-placeholder="Seleccione firmantes" data-init-plugin="select2" multiple="multiple">
@@ -152,9 +166,7 @@
             if (selectedArray.length > 0) {
                 let options = '';
                 selectedArray.forEach(element => {
-                    console.log(element);
                     options += element.id + " ";
-                    console.log(options);
                 });
                 $('#usersarray').val(options);
             }

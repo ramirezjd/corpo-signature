@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Documento;
+use App\Models\Cabecera;
 use App\Models\User;
 use App\Models\Firma;
 use Illuminate\Http\Request;
@@ -35,10 +36,12 @@ class DocumentoController extends Controller
     public function create()
     {
         $users = User::all();
+        $cabeceras = Cabecera::all();
         return view('documentos.create', [
             'root' => 'Documentos',
             'page' => 'Crear',
             'users' => $users,
+            'cabeceras' => $cabeceras,
         ]);
     }
 
@@ -50,6 +53,12 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
+        $request->validate([
+            'usersarray' => 'required',
+            'document_body' => 'required',
+            'id_cabecera' => 'required',
+        ]);
+
         $usersIds = request('usersarray');
         $usersArray = explode(" ", $usersIds);
         $usersObjects = User::whereIn('id', $usersArray)->get();
@@ -60,9 +69,22 @@ class DocumentoController extends Controller
         }
         $body = request('document_body');
         
+        $header = Cabecera::findOrFail(request('id_cabecera'));
+        
+        $bodyRaw = $header->cuerpo_cabecera;
+        $order   = array("\r\n", "\n", "\r");
+        $replace = '<br />';
+        $bodyHeader = str_replace($order, $replace, $bodyRaw);
+
+
+        $header['urlLogo'] = Storage::url($header->img_path);
+        $header['bodyHeader'] = $bodyHeader;
+
+        
         $pdf = PDF::loadView('documentos.documentopdf',[
             'body' => $body,
             'users' => $usersObjects,
+            'header' => $header,
         ]);
 
         return $pdf->download(uniqid() .'.pdf');
