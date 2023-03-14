@@ -135,23 +135,11 @@
 <body>
     <div class="membrete add-detail mt-10">
         <div class="w-20 float-left logo mt-10">
-            <img src="{{ public_path('assets/img/logo.png') }}" alt="Logo">
+            <img src="{{ public_path($header->urlLogo) }}" alt="Logo">
         </div>
         <div class="w-80 text-justify float-left">
             <span class="text-bold">
-                Lorem ipsum dolor sit amet, consectetur adipisicing elit. Soluta quos ad
-            </span>
-            <br>
-            <span class="text-bold">
-                Aspernatur esse modi, fugiat pariatur sapiente. Tempora cum eaque
-            </span>
-            <br>
-            <span class="text-bold">
-                Nihil cupiditate possimus amet sit blanditiis architecto tempore obcaec
-            </span>
-            <br>
-            <span class="text-bold">
-                ati officiis, quasi, rem porro nesciunt, alias accusamus? Necessitati
+                {!! $header->bodyHeader !!}
             </span>
 
         </div>

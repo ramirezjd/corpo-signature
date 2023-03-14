@@ -10,6 +10,7 @@ class Cabecera extends Model
     use SoftDeletes;
     
     protected $fillable = [
+        'nombre_cabecera',
         'cuerpo_cabecera',
         'img_path',
     ];

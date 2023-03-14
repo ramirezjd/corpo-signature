@@ -51,4 +51,14 @@ Route::middleware(['auth'])->group(function () {
         Route::delete('/documentos/{id}', 'destroy');
         Route::get('/documentos/{id}/download', 'downloadPdf');
     });
+
+    Route::controller(App\Http\Controllers\CabeceraController::class)->group(function () {
+        Route::get('/cabeceras', 'index');
+        Route::get('/cabeceras/create', 'create');
+        Route::post('/cabeceras', 'store');
+        Route::get('/cabeceras/{id}', 'show');
+        Route::get('/cabeceras/{id}/edit', 'edit');
+        Route::put('/cabeceras/{id}', 'update');
+        Route::delete('/cabeceras/{id}', 'destroy');
+    });
 });
