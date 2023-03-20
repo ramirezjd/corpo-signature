@@ -24,7 +24,7 @@
                             <tr>
                                 <th style="width:35%">Descripcion</th>
                                 <th style="width:20%">Fecha de creacion</th>
-                                <th style="width:15%" class="text-center" >Aprbados</th>
+                                <th style="width:15%" class="text-center" >Aprobados</th>
                                 <th style="width:15%" class="text-center" >Pendientes</th>
                                 <th style="width:15%">Acciones</th>
                             </tr>
@@ -38,6 +38,9 @@
                                     <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
                                     <td class="v-align-middle d-flex">
                                         <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                        @if ($documento->descargar)
+                                            <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach
@@ -62,7 +65,7 @@
                             <tr>
                                 <th style="width:35%">Descripcion</th>
                                 <th style="width:20%">Fecha de creacion</th>
-                                <th style="width:15%" class="text-center" >Aprbados</th>
+                                <th style="width:15%" class="text-center" >Aprobados</th>
                                 <th style="width:15%" class="text-center" >Pendientes</th>
                                 <th style="width:15%">Acciones</th>
                             </tr>

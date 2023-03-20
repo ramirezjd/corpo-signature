@@ -237,6 +237,10 @@ class DocumentoController extends Controller
     public function downloadPdf($id)
     {
         $currentUser = Auth::user();
+        $counting = UsuariosPorDocumento::where('documento_id', $id)->where('user_id', $currentUser->id)->count();
+        if($counting === 0){
+            return redirect('/documentos');
+        }
         $documento = Documento::findOrFail($id);
         $header = Cabecera::findOrFail($documento->cabecera_id);
         $body = $documento->cuerpo_documento;
