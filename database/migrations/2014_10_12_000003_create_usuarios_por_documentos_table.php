@@ -17,6 +17,8 @@ class CreateUsuariosPorDocumentosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('documento_id');
             $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('firma_id')->nullable();
+            $table->boolean('aprobacion')->default(false);
             $table->string('condicion', 16);
             $table->timestamps();
             $table->softDeletes();

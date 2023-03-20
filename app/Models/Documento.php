@@ -13,6 +13,7 @@ class Documento extends Model
         'cabecera_id',
         'status_id',
         'cuerpo_documento',
+        'cuerpo_documento_unformatted',
         'descripcion_documento',
         'fecha_emision',
     ];
@@ -29,7 +30,17 @@ class Documento extends Model
 
     public function users()
     {
-        return $this->belongsToMany(User::class, 'usuarios_por_documentos');
-        // belongsToMany(Role::class, 'role_user', 'user_id', 'role_id');
+        return $this->belongsToMany(User::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion');
     }
+
+    public function usuariosSolicitante()
+    {
+        return $this->belongsToMany(User::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion')->wherePivot('condicion', 'solicitante');
+    }
+
+    public function usuariosRevisor()
+    {
+        return $this->belongsToMany(User::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion')->wherePivot('condicion', 'revisor');
+    }
+
 }

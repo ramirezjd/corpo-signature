@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+    <link type="text/css" href="{{ asset('assets/quillEditor/quill.snow.css') }}" rel="stylesheet"> 
     <div class="container">
 
         @if ($errors->any())
@@ -29,7 +29,7 @@
             @csrf
 
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Membrete:</label>
                         <select name="id_cabecera" id="id_cabecera" class="full-width form-element " data-init-plugin="select2">
@@ -38,6 +38,12 @@
                                 <option value="{{ $cabecera->id }}">{{ $cabecera->nombre_cabecera }}</option>
                             @endforeach
                         </select>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default ">
+                        <label>Descripcion:</label>
+                        <textarea name="descripcion_documento" id="descripcion_documento" rows="1"class="full-width form-element "></textarea>
                     </div>
                 </div>
             </div>
@@ -60,11 +66,12 @@
             <div class="row">
                 <div class="col-md-12">
                     <div class="card-body no-scroll card-toolbar">
-                        <h5>Quill Editor</h5>
+                        <h5>Cuerpo del documento</h5>
                         <div class="quill-wrapper">
                             <div id="quill"></div>
                         </div>
                         <textarea name="document_body" id="document_body" hidden class="d-none"></textarea>
+                        <textarea name="document_body_unformatted" id="document_body_unformatted" hidden class="d-none"></textarea>
                     </div>
                 </div>
             </div>
@@ -76,8 +83,7 @@
             </div>
         </form>
     </div>
-
-    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    <script type="text/javascript" src="{{ asset('assets/quillEditor/quill.js') }}"></script>
     <script>
         var toolbarOptions = [
             ['bold', 'italic', 'underline', 'strike'], // toggled buttons
@@ -155,6 +161,7 @@
                 var delta = quill.getContents();
                 console.log(quillGetHTML(delta));
                 $('#document_body').val(quillGetHTML(delta));
+                $('#document_body_unformatted').val(JSON.stringify(delta));
             }
         });
         $(document).ready(function() {

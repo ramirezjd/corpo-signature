@@ -40,7 +40,18 @@ class User extends Authenticatable
     
     public function documentos()
     {
-        return $this->belongsToMany(Documento::class, 'usuarios_por_documentos');
+        return $this->belongsToMany(Documento::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion');
+        
+    }
+
+    public function documentosSolicitante()
+    {
+        return $this->belongsToMany(Documento::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion')->wherePivot('condicion', 'solicitante');
+    }
+
+    public function documentosRevisor()
+    {
+        return $this->belongsToMany(Documento::class, 'usuarios_por_documentos')->withPivot('firma_id', 'condicion', 'aprobacion')->wherePivot('condicion', 'revisor');
     }
 
     /**

@@ -50,6 +50,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/documentos/{id}', 'update');
         Route::delete('/documentos/{id}', 'destroy');
         Route::get('/documentos/{id}/download', 'downloadPdf');
+        Route::get('/documentos/{id}/approve', 'approve');
     });
 
     Route::controller(App\Http\Controllers\CabeceraController::class)->group(function () {

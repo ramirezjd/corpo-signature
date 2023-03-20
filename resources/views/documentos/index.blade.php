@@ -1,7 +1,6 @@
 @extends('layouts.default')
-
-
 @section('content')
+    <?php $user = Auth::user(); ?>
     <div class="container">
         <div class="row mb-3">
             <div class="col-lg-8 margin-tb my-auto">
@@ -12,37 +11,80 @@
             </div>
         </div>
 
+        <div class="row mb-0">
+            <div class="col-lg-8 margin-tb my-auto">
+                <h3>Documentos como Solicitante</h3>
+            </div>
+        </div>
         <div class="row">
             <div class="col">
                 <div class="table-responsive">
                     <table class="table table-hover table-condensed" id="condensedTable">
                         <thead>
                             <tr>
-                                <th style="width:25%">Departamento</th>
-                                <th style="width:20%">Nombres</th>
-                                <th style="width:20%">Apellidos</th>
-                                <th style="width:20%">Documento</th>
+                                <th style="width:35%">Descripcion</th>
+                                <th style="width:20%">Fecha de creacion</th>
+                                <th style="width:15%" class="text-center" >Aprbados</th>
+                                <th style="width:15%" class="text-center" >Pendientes</th>
                                 <th style="width:15%">Acciones</th>
                             </tr>
                         </thead>
                         <tbody>
-                            @foreach ($users as $user)
+                            @foreach ($documentosSolicitante as $documento)
                                 <tr>
-                                    <td class="v-align-middle semi-bold"> {{ $user->departamento->nombre_departamento }} </td>
-                                    <td class="v-align-middle semi-bold"> {{ $user->nombres_usuario }} </td>
-                                    <td class="v-align-middle"> {{ $user->apellidos_usuario }} </td>
-                                    <td class="v-align-middle semi-bold"> {{ $user->documento_usuario }} </td>
+                                    <td class="v-align-middle semi-bold"> {{ $documento->descripcion_documento }} </td>
+                                    <td class="v-align-middle semi-bold"> {{ $documento->created_at }} </td>
+                                    <td class="v-align-middle semi-bold text-center "> {{ $documento->aprobados }} </td>
+                                    <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
                                     <td class="v-align-middle d-flex">
-                                        <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="usuarios/{{ $user->id }}"><i class="pg-icon">eye</i></a>
-                                        <a class="btn btn-primary btn-icon-center text-white mr-1 px-1" href="usuarios/{{ $user->id }}/edit"><i class="pg-icon">edit</i></a>
-                                        <form action="/usuarios/{{ $user->id }}" method="POST" role="form">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button class="btn btn-danger btn-icon-center text-white px-1" type="submit"><i class="pg-icon">trash</i></button>
-                                        </form>
+                                        <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
                                     </td>
-                                    
-                    
+                                </tr>
+                            @endforeach
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        
+        <div class="row mb-0">
+            <div class="col-lg-8 margin-tb my-auto">
+                <h3>Documentos como Revisor</h3>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="table-responsive">
+                    <table class="table table-hover table-condensed" id="condensedTable">
+                        <thead>
+                            <tr>
+                                <th style="width:35%">Descripcion</th>
+                                <th style="width:20%">Fecha de creacion</th>
+                                <th style="width:15%" class="text-center" >Aprbados</th>
+                                <th style="width:15%" class="text-center" >Pendientes</th>
+                                <th style="width:15%">Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @foreach ($documentosRevisor as $documento)
+                                <tr>
+                                    <td class="v-align-middle semi-bold"> {{ $documento->descripcion_documento }} </td>
+                                    <td class="v-align-middle semi-bold"> {{ $documento->created_at }} </td>
+                                    <td class="v-align-middle semi-bold text-center"> {{ $documento->aprobados }} </td>
+                                    <td class="v-align-middle semi-bold text-center"> {{ $documento->pendientes }} </td>
+                                    <td class="v-align-middle d-flex">
+                                        <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                        @if ($documento->aprobado)
+                                            <button class="btn btn-success  mr-1 px-1"><i class="pg-icon">tick_circle</i></button>
+                                        @else
+                                            <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/approve"><i class="pg-icon">tick</i></a>    
+                                        @endif
+                                        @if ($documento->descargar)
+                                            <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
