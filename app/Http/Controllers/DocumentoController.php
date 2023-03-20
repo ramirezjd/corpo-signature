@@ -7,6 +7,7 @@ use App\Models\UsuariosPorDocumento;
 use App\Models\Cabecera;
 use App\Models\User;
 use App\Models\Firma;
+use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -40,7 +41,7 @@ class DocumentoController extends Controller
             }
             $documento['pendientes'] = $pendientes;
             $documento['aprobados'] = $aprobados;
-            $documento['descargar'] = count( $documento->usuariosRevisor ) == $aprobados;
+            $documento['descargar'] = $documento->status_id == 2;
         }
 
         $docsRevisor = $currentUser->documentosRevisor->sortByDesc('created_at');
@@ -64,7 +65,7 @@ class DocumentoController extends Controller
             }
             $documento['pendientes'] = $pendientes;
             $documento['aprobados'] = $aprobados;
-            $documento['descargar'] = count( $documento->usuariosRevisor ) == $aprobados;
+            $documento['descargar'] = $documento->status_id == 2;
         }
 
         return view('documentos.index', [
@@ -248,9 +249,6 @@ class DocumentoController extends Controller
         $header['bodyHeader'] = $bodyHeader;
 
         $revisores = $documento->usuariosRevisor;
-        // $usersIds = request('usersarray');
-        // $usersArray = explode(" ", $usersIds);
-        // $usersObjects = User::whereIn('id', $usersArray)->get();
         foreach($revisores as $user ) {
             $firma = Firma::findOrFail($user->pivot->firma_id);
             $signaturePath = Storage::url($firma->img_path);
@@ -273,6 +271,22 @@ class DocumentoController extends Controller
         $approvalItem = UsuariosPorDocumento::where("user_id", $currentUser->id)->where("documento_id", $documento->id)->where("condicion", "revisor")->first();
         $approvalItem['aprobacion'] = 1;
         $approvalItem->save();
+
+        $pendientes = 0;
+        $aprobados = 0;
+        $docsRevisar = $documento->usuariosRevisor;
+        foreach ($docsRevisar as $doc ) {
+            if($doc->pivot->aprobacion){
+                $aprobados++;
+            }
+            else{
+                $pendientes++;
+            }
+        }
+        if(count( $documento->usuariosRevisor ) == $aprobados){
+            $documento->status_id = 2;
+            $documento->save();
+        }
         return redirect('/documentos');
     }
 }

@@ -20,7 +20,7 @@ class StatusSeeder extends Seeder
         ]);
         
         Status::create([
-            'nombre_status' => "Aprbado",
+            'nombre_status' => "Aprobado",
             'descripcion_status' => "El documento fue aprobado por todos los firmantes",
         ]);
     }
