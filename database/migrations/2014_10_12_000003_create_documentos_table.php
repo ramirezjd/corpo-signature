@@ -17,12 +17,12 @@ class CreateDocumentosTable extends Migration
             $table->id();
             $table->unsignedBigInteger('cabecera_id');
             $table->unsignedBigInteger('status_id');
-            $table->string('cuerpo_documento', 1256);
+            $table->text('cuerpo_documento');
+            $table->text('cuerpo_documento_unformatted');
             $table->string('descripcion_documento', 256)->nullable();
-            $table->timestamp('fecha_emision',0);
+            $table->timestamp('fecha_emision',0)->nullable();
             $table->timestamps();
             $table->softDeletes();
-            
             //Referencia la cabecera que usa
             $table->foreign('cabecera_id')->references('id')->on('cabeceras');
             //Referencia el status que posee

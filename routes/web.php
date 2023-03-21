@@ -43,6 +43,8 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(App\Http\Controllers\DocumentoController::class)->group(function () {
         Route::get('/documentos', 'index');
+        Route::get('/documentos/solicitante', 'solicitante');
+        Route::get('/documentos/revisor', 'revisor');
         Route::get('/documentos/create', 'create');
         Route::post('/documentos', 'store');
         Route::get('/documentos/{id}', 'show');
@@ -50,6 +52,7 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/documentos/{id}', 'update');
         Route::delete('/documentos/{id}', 'destroy');
         Route::get('/documentos/{id}/download', 'downloadPdf');
+        Route::get('/documentos/{id}/approve', 'approve');
     });
 
     Route::controller(App\Http\Controllers\CabeceraController::class)->group(function () {

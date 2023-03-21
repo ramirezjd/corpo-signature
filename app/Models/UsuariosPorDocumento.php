@@ -12,6 +12,8 @@ class UsuariosPorDocumento extends Model
     protected $fillable = [
         'documento_id',
         'user_id',
+        'firma_id',
         'condicion',
+        'aprobacion',
     ];
 }
