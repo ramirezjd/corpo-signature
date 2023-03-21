@@ -1,5 +1,11 @@
 @extends('layouts.default')
 @section('content')
+    <style>
+        .exportOptions{
+            display: none !important;
+        }
+    </style>
+
     <?php $user = Auth::user(); ?>
     <div class="container">
         <div class="row mb-3">
@@ -19,7 +25,7 @@
         <div class="row">
             <div class="col">
                 <div class="table-responsive">
-                    <table class="table table-hover table-condensed" id="condensedTable">
+                    <table class="table table-hover table-condensed" id="tableWithExportOptions">
                         <thead>
                             <tr>
                                 <th style="width:35%">Descripcion</th>
@@ -31,18 +37,18 @@
                         </thead>
                         <tbody>
                             @foreach ($documentosSolicitante as $documento)
-                                <tr>
-                                    <td class="v-align-middle semi-bold"> {{ $documento->descripcion_documento }} </td>
-                                    <td class="v-align-middle semi-bold"> {{ $documento->created_at }} </td>
-                                    <td class="v-align-middle semi-bold text-center "> {{ $documento->aprobados }} </td>
-                                    <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
-                                    <td class="v-align-middle d-flex">
-                                        <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
-                                        @if ($documento->descargar)
-                                            <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
-                                        @endif
-                                    </td>
-                                </tr>
+                            <tr>
+                                <td class="v-align-middle semi-bold"> {{ $documento->descripcion_documento }} </td>
+                                <td class="v-align-middle semi-bold"> {{ $documento->created_at }} </td>
+                                <td class="v-align-middle semi-bold text-center "> {{ $documento->aprobados }} </td>
+                                <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
+                                <td class="v-align-middle d-flex">
+                                    <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                    @if ($documento->descargar)
+                                        <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
+                                    @endif
+                                </td>
+                            </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -96,4 +102,29 @@
             </div>
         </div>
     </div>
+
+    <script src="{{ asset('assets/plugins/jquery-datatable/media/js/jquery.dataTables.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/TableTools/js/dataTables.tableTools.min.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/media/js/dataTables.bootstrap.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jquery-datatable/extensions/Bootstrap/jquery-datatable-bootstrap.js') }}" type="text/javascript"></script>
+    <script type="{{ asset('text/javascript" src="assets/plugins/datatables-responsive/js/datatables.responsive.js') }}"></script>
+
+    <script>
+        var initTableWithExportOptions = function() {
+            var table = $('#tableWithExportOptions');
+            var settings = {
+                "sDom": "<'exportOptions'T><'table-responsive sm-m-b-15't><'row'<p i>>",
+                "destroy": true,
+                "scrollCollapse": true,
+                "oLanguage": {
+                    "sLengthMenu": "_MENU_ ",
+                    "sInfo": "Mostrando <b>_START_ al _END_</b> de _TOTAL_ registros"
+                },
+                "iDisplayLength": 10,
+            };
+            table.dataTable(settings);
+        }
+
+    initTableWithExportOptions();
+    </script>
 @endsection
