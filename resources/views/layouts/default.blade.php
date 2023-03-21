@@ -55,12 +55,12 @@
                     <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
                     <ul class="sub-menu">
                         <li>
-                            <a href="/documentos">Creados</a>
+                            <a href="/documentos/solicitante">Creados</a>
                             <span class="icon-thumbnail"><i data-feather="user-plus"></i></span>
 
                         </li>
                         <li>
-                            <a href="/documentos">Revisor</a>
+                            <a href="/documentos/revisor">Revisor</a>
                             <span class="icon-thumbnail"><i data-feather="user-check"></i></span>
                         </li>
                     </ul>

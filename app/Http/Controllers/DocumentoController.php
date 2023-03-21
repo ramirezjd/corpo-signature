@@ -7,7 +7,6 @@ use App\Models\UsuariosPorDocumento;
 use App\Models\Cabecera;
 use App\Models\User;
 use App\Models\Firma;
-use App\Models\Status;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
@@ -24,6 +23,7 @@ class DocumentoController extends Controller
      */
     public function index()
     {
+        return redirect('/documentos/solicitante');
         $currentUser = Auth::user();
         
         $docsSolicitante = $currentUser->documentosSolicitante->sortByDesc('created_at');
@@ -75,6 +75,73 @@ class DocumentoController extends Controller
             'documentosRevisor' => $docsRevisor,
         ]);
     }
+
+    public function solicitante()
+    {
+        $currentUser = Auth::user();
+        
+        $docsSolicitante = $currentUser->documentosSolicitante->sortByDesc('created_at');
+        foreach ($docsSolicitante as $documento) {
+            $pendientes = 0;
+            $aprobados = 0;
+            $docsRevisar = $documento->usuariosRevisor;
+            foreach ($docsRevisar as $doc ) {
+                if($doc->pivot->aprobacion){
+                    $aprobados++;
+                }
+                else{
+                    $pendientes++;
+                }
+            }
+            $documento['pendientes'] = $pendientes;
+            $documento['aprobados'] = $aprobados;
+            $documento['descargar'] = $documento->status_id == 2;
+        }
+
+        return view('documentos.index', [
+            'root' => 'Documentos',
+            'page' => '',
+            'title' => 'Documentos creados por ti',
+            'documentos' => $docsSolicitante,
+        ]);
+    }
+
+    public function revisor()
+    {
+        $currentUser = Auth::user();
+        
+        $docsRevisor = $currentUser->documentosRevisor->sortByDesc('created_at');
+        foreach ($docsRevisor as $documento) {
+            $pendientes = 0;
+            $aprobados = 0;
+            $docsRevisar = $documento->usuariosRevisor;
+            foreach ($docsRevisar as $doc ) {
+                if($doc->pivot->aprobacion){
+                    $aprobados++;
+                }
+                else{
+                    $pendientes++;
+                }
+            }
+            if($documento->pivot->aprobacion && ($documento->pivot->user_id == $currentUser->id) && ($documento->pivot->documento_id == $documento->id)){
+                $documento['aprobado'] = true;
+            }
+            else{
+                $documento['aprobado'] = false;
+            }
+            $documento['pendientes'] = $pendientes;
+            $documento['aprobados'] = $aprobados;
+            $documento['descargar'] = $documento->status_id == 2;
+        }
+
+        return view('documentos.index', [
+            'root' => 'Documentos',
+            'page' => '',
+            'title' => 'Documentos firma solicitada',
+            'documentos' => $docsRevisor,
+        ]);
+    }
+    
 
     /**
      * Show the form for creating a new resource.
@@ -232,7 +299,6 @@ class DocumentoController extends Controller
     {
         //
     }
-
 
     public function downloadPdf($id)
     {
