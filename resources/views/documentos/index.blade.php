@@ -43,9 +43,15 @@
                                 <td class="v-align-middle semi-bold text-center "> {{ $documento->aprobados }} </td>
                                 <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
                                 <td class="v-align-middle d-flex">
-                                    <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                    <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="/documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                    @if ($documento->aprobado && $role == "revisor")
+                                        <button class="btn btn-success  mr-1 px-1"><i class="pg-icon">tick_circle</i></button>
+                                    @endif
+                                    @if (!$documento->aprobado && $role == "revisor")
+                                        <a class="btn btn-success  mr-1 px-1" href="/documentos/{{ $documento->id }}/approve"><i class="pg-icon">tick</i></a>    
+                                    @endif
                                     @if ($documento->descargar)
-                                        <a class="btn btn-success  mr-1 px-1" href="documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
+                                        <a class="btn btn-success  mr-1 px-1" href="/documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
                                     @endif
                                 </td>
                             </tr>

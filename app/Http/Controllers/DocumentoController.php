@@ -24,56 +24,57 @@ class DocumentoController extends Controller
     public function index()
     {
         return redirect('/documentos/solicitante');
-        $currentUser = Auth::user();
         
-        $docsSolicitante = $currentUser->documentosSolicitante->sortByDesc('created_at');
-        foreach ($docsSolicitante as $documento) {
-            $pendientes = 0;
-            $aprobados = 0;
-            $docsRevisar = $documento->usuariosRevisor;
-            foreach ($docsRevisar as $doc ) {
-                if($doc->pivot->aprobacion){
-                    $aprobados++;
-                }
-                else{
-                    $pendientes++;
-                }
-            }
-            $documento['pendientes'] = $pendientes;
-            $documento['aprobados'] = $aprobados;
-            $documento['descargar'] = $documento->status_id == 2;
-        }
+        // $currentUser = Auth::user();
+        
+        // $docsSolicitante = $currentUser->documentosSolicitante->sortByDesc('created_at');
+        // foreach ($docsSolicitante as $documento) {
+        //     $pendientes = 0;
+        //     $aprobados = 0;
+        //     $docsRevisar = $documento->usuariosRevisor;
+        //     foreach ($docsRevisar as $doc ) {
+        //         if($doc->pivot->aprobacion){
+        //             $aprobados++;
+        //         }
+        //         else{
+        //             $pendientes++;
+        //         }
+        //     }
+        //     $documento['pendientes'] = $pendientes;
+        //     $documento['aprobados'] = $aprobados;
+        //     $documento['descargar'] = $documento->status_id == 2;
+        // }
 
-        $docsRevisor = $currentUser->documentosRevisor->sortByDesc('created_at');
-        foreach ($docsRevisor as $documento) {
-            $pendientes = 0;
-            $aprobados = 0;
-            $docsRevisar = $documento->usuariosRevisor;
-            foreach ($docsRevisar as $doc ) {
-                if($doc->pivot->aprobacion){
-                    $aprobados++;
-                }
-                else{
-                    $pendientes++;
-                }
-            }
-            if($documento->pivot->aprobacion && ($documento->pivot->user_id == $currentUser->id) && ($documento->pivot->documento_id == $documento->id)){
-                $documento['aprobado'] = true;
-            }
-            else{
-                $documento['aprobado'] = false;
-            }
-            $documento['pendientes'] = $pendientes;
-            $documento['aprobados'] = $aprobados;
-            $documento['descargar'] = $documento->status_id == 2;
-        }
+        // $docsRevisor = $currentUser->documentosRevisor->sortByDesc('created_at');
+        // foreach ($docsRevisor as $documento) {
+        //     $pendientes = 0;
+        //     $aprobados = 0;
+        //     $docsRevisar = $documento->usuariosRevisor;
+        //     foreach ($docsRevisar as $doc ) {
+        //         if($doc->pivot->aprobacion){
+        //             $aprobados++;
+        //         }
+        //         else{
+        //             $pendientes++;
+        //         }
+        //     }
+        //     if($documento->pivot->aprobacion && ($documento->pivot->user_id == $currentUser->id) && ($documento->pivot->documento_id == $documento->id)){
+        //         $documento['aprobado'] = true;
+        //     }
+        //     else{
+        //         $documento['aprobado'] = false;
+        //     }
+        //     $documento['pendientes'] = $pendientes;
+        //     $documento['aprobados'] = $aprobados;
+        //     $documento['descargar'] = $documento->status_id == 2;
+        // }
 
-        return view('documentos.index', [
-            'root' => 'Documentos',
-            'page' => '',
-            'documentosSolicitante' => $docsSolicitante,
-            'documentosRevisor' => $docsRevisor,
-        ]);
+        // return view('documentos.index', [
+        //     'root' => 'Documentos',
+        //     'page' => '',
+        //     'documentosSolicitante' => $docsSolicitante,
+        //     'documentosRevisor' => $docsRevisor,
+        // ]);
     }
 
     public function solicitante()
@@ -102,6 +103,7 @@ class DocumentoController extends Controller
             'root' => 'Documentos',
             'page' => '',
             'title' => 'Documentos creados por ti',
+            'role' => "solicitante",
             'documentos' => $docsSolicitante,
         ]);
     }
@@ -138,6 +140,7 @@ class DocumentoController extends Controller
             'root' => 'Documentos',
             'page' => '',
             'title' => 'Documentos firma solicitada',
+            'role' => "revisor",
             'documentos' => $docsRevisor,
         ]);
     }
@@ -225,28 +228,71 @@ class DocumentoController extends Controller
     public function show($id)
     {
         $currentUser = Auth::user();
-        $users = User::all();
-        $cabeceras = Cabecera::all();
-        $documento = Documento::findOrFail($id);
-        $documento['aprobado'] = false;
-        $documento['bodyJson'] = json_encode ($documento->cuerpo_documento_unformatted, true);
-        $usuariosRevisores = $documento->usuariosRevisor;
-        $selectedUsers = [];
-        foreach ($usuariosRevisores as $user) {
-            array_push($selectedUsers, strval($user->id));
-            if($user->pivot->aprobacion && ($user->pivot->user_id == $currentUser->id) && ($user->pivot->documento_id == $documento->id)){
-                $documento['aprobado'] = true;
-            }
+        $counting = UsuariosPorDocumento::where('documento_id', $id)->where('user_id', $currentUser->id)->count();
+        if($counting === 0){
+            return redirect('/documentos');
         }
-        
-        return view('documentos.show', [
-            'root' => 'Documentos',
-            'page' => 'Ver',
-            'users' => $users,
-            'selectedUsers' => "".json_encode($selectedUsers)."",
-            'cabeceras' => $cabeceras,
-            'documento' => $documento,
+        $documento = Documento::findOrFail($id);
+        $header = Cabecera::findOrFail($documento->cabecera_id);
+        $body = $documento->cuerpo_documento;
+
+        $headerBodyRaw = $header->cuerpo_cabecera;
+        $order   = array("\r\n", "\n", "\r");
+        $replace = '<br />';
+        $bodyHeader = str_replace($order, $replace, $headerBodyRaw);
+        $header['urlLogo'] = Storage::url($header->img_path);
+        $header['bodyHeader'] = $bodyHeader;
+
+        $revisores = [];
+
+        $pdf = PDF::loadView('documentos.documentopdf',[
+            'body' => $body,
+            'users' => $revisores,
+            'header' => $header,
         ]);
+        $pdf->output();
+        $canvas = $pdf->getDomPDF()->getCanvas();
+
+        $height = $canvas->get_height();
+        $width = $canvas->get_width();
+
+        $canvas->set_opacity(.2,"Multiply");
+
+        $canvas->set_opacity(.2);
+
+        $canvas->page_text($width/8, $height/3, 'PREVISUALIZACION', null,
+        55, array(0,0,0),2,2,-30);
+        $canvas->page_text($width/8, $height/1.7, 'PREVISUALIZACION', null,
+        55, array(0,0,0),2,2,-30);
+        $canvas->page_text($width/8, $height/1.15, 'PREVISUALIZACION', null,
+        55, array(0,0,0),2,2,-30);
+
+        return $pdf->stream("", array("Attachment" => false));
+
+
+        // $currentUser = Auth::user();
+        // $users = User::all();
+        // $cabeceras = Cabecera::all();
+        // $documento = Documento::findOrFail($id);
+        // $documento['aprobado'] = false;
+        // $documento['bodyJson'] = json_encode ($documento->cuerpo_documento_unformatted, true);
+        // $usuariosRevisores = $documento->usuariosRevisor;
+        // $selectedUsers = [];
+        // foreach ($usuariosRevisores as $user) {
+        //     array_push($selectedUsers, strval($user->id));
+        //     if($user->pivot->aprobacion && ($user->pivot->user_id == $currentUser->id) && ($user->pivot->documento_id == $documento->id)){
+        //         $documento['aprobado'] = true;
+        //     }
+        // }
+        
+        // return view('documentos.show', [
+        //     'root' => 'Documentos',
+        //     'page' => 'Ver',
+        //     'users' => $users,
+        //     'selectedUsers' => "".json_encode($selectedUsers)."",
+        //     'cabeceras' => $cabeceras,
+        //     'documento' => $documento,
+        // ]);
     }
 
     /**

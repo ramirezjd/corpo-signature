@@ -127,11 +127,7 @@
                                         @endforeach
                                     </div>
                                     <div class="notification-footer text-center">
-                                        <a href="#" class="">Read all notifications</a>
-                                        <a data-toggle="refresh" class="portlet-refresh text-black pull-right"
-                                            href="#">
-                                            <i class="pg-refresh_new"></i>
-                                        </a>
+                                        <a href="/notificaciones" class="">Ver todas las notificaciones</a>
                                     </div>
                                 </div>
                             </div>

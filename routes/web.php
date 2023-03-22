@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return view('auth.login');
 });
 
 Auth::routes();
@@ -63,5 +63,9 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/cabeceras/{id}/edit', 'edit');
         Route::put('/cabeceras/{id}', 'update');
         Route::delete('/cabeceras/{id}', 'destroy');
+    });
+    
+    Route::controller(App\Http\Controllers\NotificationsController::class)->group(function () {
+        Route::get('/notificaciones', 'index');
     });
 });

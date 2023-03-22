@@ -49,6 +49,7 @@ class NewSignatureRequest extends Notification
             'email' => $this->user->email,
             'departamento' => $this->user->departamento->nombre_departamento,
             'descripcion_documento' => $this->document->descripcion_documento,
+            'documento_id' => $this->document->id,
         ];
     }
 }
