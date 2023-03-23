@@ -29,8 +29,8 @@
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="v-align-middle semi-bold"> {{ $user->departamento->nombre_departamento }} </td>
-                                    <td class="v-align-middle semi-bold"> {{ $user->nombres_usuario }} </td>
-                                    <td class="v-align-middle"> {{ $user->apellidos_usuario }} </td>
+                                    <td class="v-align-middle semi-bold"> {{ $user->primer_nombre_usuario }}  {{ $user->segundo_nombre_usuario }}</td>
+                                    <td class="v-align-middle"> {{ $user->primer_apellido_usuario }} {{ $user->segundo_apellido_usuario }} </td>
                                     <td class="v-align-middle semi-bold"> {{ $user->documento_usuario }} </td>
                                     <td class="v-align-middle d-flex">
                                         <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="usuarios/{{ $user->id }}"><i class="pg-icon">eye</i></a>

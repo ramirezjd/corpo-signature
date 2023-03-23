@@ -15,8 +15,10 @@ class AdminUserSeeder extends Seeder
     public function run()
     {
         $adminUser = User::create([
-            'nombres_usuario' => 'Administrador Master',
-            'apellidos_usuario' => 'Corposalud Firmas',
+            'primer_nombre_usuario' => 'Administrador',
+            'segundo_nombre_usuario' => 'Master',
+            'primer_apellido_usuario' => 'Corposalud',
+            'segundo_apellido_usuario' => 'Firmas',
             'documento_usuario' => 'V-12345678',
             'email' => 'admin@corposaludfirmas.com',
             'password' => bcrypt('corpoAdmin001'),
@@ -24,8 +26,10 @@ class AdminUserSeeder extends Seeder
         ]);
 
         $testUser = User::create([
-            'nombres_usuario' => 'Usuario De',
-            'apellidos_usuario' => 'Pruebas Varias',
+            'primer_nombre_usuario' => 'Usuario',
+            'segundo_nombre_usuario' => 'De',
+            'primer_apellido_usuario' => 'Pruebas',
+            'segundo_apellido_usuario' => 'Varias',
             'documento_usuario' => 'V-87654321',
             'email' => 'test@corposaludfirmas.com',
             'password' => bcrypt('corpoAdmin001'),
@@ -33,8 +37,10 @@ class AdminUserSeeder extends Seeder
         ]);
 
         $testUser2 = User::create([
-            'nombres_usuario' => 'Fulanito DeTal',
-            'apellidos_usuario' => 'Sandy Papo',
+            'primer_nombre_usuario' => 'Fulanito',
+            'segundo_nombre_usuario' => 'DeTal',
+            'primer_apellido_usuario' => 'Sandy',
+            'segundo_apellido_usuario' => 'Papo',
             'documento_usuario' => 'V-11223344',
             'email' => 'test2@corposaludfirmas.com',
             'password' => bcrypt('corpoAdmin001'),

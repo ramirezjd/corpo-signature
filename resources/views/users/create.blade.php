@@ -20,7 +20,7 @@
 
         @if ($errors->any())
             <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <strong>Vaya!</strong> Parece que tenemos problemas con algunos campos del formulario!.<br><br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -42,19 +42,35 @@
             @csrf
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
-                        <label>Nombres</label>
-                        <input type="text" id="nombres_usuario" name="nombres_usuario" class="form-control" required>
+                        <label>Primer Nombre</label>
+                        <input type="text" id="primer_nombre_usuario" name="primer_nombre_usuario" maxlength="30" class="form-control" value="{{ old('primer_nombre_usuario') }}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group form-group-default required ">
-                        <label>Apellidos</label>
-                        <input type="text" id="apellidos_usuario" name="apellidos_usuario" class="form-control" required>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default ">
+                        <label>Segundo Nombre</label>
+                        <input type="text" id="segundo_nombre_usuario" name="segundo_nombre_usuario" maxlength="30" class="form-control" value="{{ old('segundo_nombre_usuario') }}">
                     </div>
                 </div>
-                <div class="col-4">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-default required ">
+                        <label>Primer Apellido</label>
+                        <input type="text" id="primer_apellido_usuario" name="primer_apellido_usuario" maxlength="30" class="form-control" value="{{ old('primer_apellido_usuario') }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default required ">
+                        <label>Segundo Apellido</label>
+                        <input type="text" id="segundo_apellido_usuario" name="segundo_apellido_usuario" maxlength="30" class="form-control" value="{{ old('segundo_apellido_usuario') }}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
                     <div class="form-group form-group-default form-group-default-select2 required">
                         <label class="">Departamento</label>
                         <select name="departamento_id" id="departamento_id" class="full-width"
@@ -66,24 +82,24 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Documento</label>
-                        <input type="text" id="documento_usuario" name="documento_usuario" class="form-control" required>
+                        <input type="text" id="documento_usuario" name="documento_usuario" class="form-control" maxlength="16" value="{{ old('documento_usuario') }}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Email</label>
-                        <input type="email" id="email" name="email" class="form-control" required>
+                        <input type="email" id="email" name="email" class="form-control" value="{{ old('email') }}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password" required>
+                        <input type="password" class="form-control" id="password" name="password" value="{{ old('password') }}" required>
                     </div>
                 </div>
             </div>
@@ -113,7 +129,7 @@
                             </div>
                             <div class="tab-pane " id="tab2Upload">
                                 <div class="my-3 px-3">
-                                    <input name="signatureFile" type="file" />    
+                                    <input name="signatureFile" type="file" accept="image/png,image/jpeg"/>    
                                 </div>
                             </div>
                         </div>

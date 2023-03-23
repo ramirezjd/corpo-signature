@@ -16,9 +16,10 @@ class CreateUsersTable extends Migration
         Schema::create('users', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('departamento_id');
-            // $table->unsignedBigInteger('firma'); // Si se usa esto no se hace filtro por la mas reciente al crear el doc
-            $table->string('nombres_usuario', 128);
-            $table->string('apellidos_usuario', 128);
+            $table->string('primer_nombre_usuario', 30);
+            $table->string('segundo_nombre_usuario', 30)->nullable();
+            $table->string('primer_apellido_usuario', 30);
+            $table->string('segundo_apellido_usuario', 30);
             $table->string('documento_usuario', 16);
             $table->string('email')->unique();
             $table->string('base64')->nullable();

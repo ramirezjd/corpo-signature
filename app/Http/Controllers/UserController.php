@@ -51,17 +51,23 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'nombres_usuario' => 'required',
-            'apellidos_usuario' => 'required',
+            'primer_nombre_usuario' => 'required|max:30',
+            'segundo_nombre_usuario' => 'required|max:30',
+            'primer_apellido_usuario' => 'required|max:30',
+            'segundo_apellido_usuario' => 'required|max:30',
             'departamento_id' => 'required',
-            'documento_usuario' => 'required',
-            'email' => 'required',
+            'documento_usuario' => 'required|max:16',
+            'email' => 'required|email:rfc',
             'password' => 'required',
+            'signed' => 'required_without:signatureFile',
+            'signatureFile' => 'required_without:signed|mimes:png,jpg,jpeg|max:2048'
         ]);
 
         $user = User::create([
-            'nombres_usuario' => request('nombres_usuario'),
-            'apellidos_usuario' => request('apellidos_usuario'),
+            'primer_nombre_usuario' => request('primer_nombre_usuario'),
+            'segundo_nombre_usuario' => request('segundo_nombre_usuario'),
+            'primer_apellido_usuario' => request('primer_apellido_usuario'),
+            'segundo_apellido_usuario' => request('segundo_apellido_usuario'),
             'departamento_id' => request('departamento_id'),
             'email' => request('email'),
             'password' => Hash::make(request('password')),
@@ -147,11 +153,13 @@ class UserController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'nombres_usuario' => 'required',
-            'apellidos_usuario' => 'required',
+            'primer_nombre_usuario' => 'required|max:30',
+            'segundo_nombre_usuario' => 'required|max:30',
+            'primer_apellido_usuario' => 'required|max:30',
+            'segundo_apellido_usuario' => 'required|max:30',
             'departamento_id' => 'required',
-            'documento_usuario' => 'required',
-            'email' => 'required',
+            'documento_usuario' => 'required|max:16',
+            'email' => 'required|email:rfc',
         ]);
 
         $user = User::findOrFail($id);

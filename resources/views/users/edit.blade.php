@@ -20,10 +20,9 @@
     </style>
 
     <div class="container">
-
         @if ($errors->any())
             <div class="alert alert-danger">
-                <strong>Whoops!</strong> There were some problems with your input.<br><br>
+                <strong>Vaya!</strong> Parece que tenemos problemas con algunos campos del formulario!.<br><br>
                 <ul>
                     @foreach ($errors->all() as $error)
                         <li>{{ $error }}</li>
@@ -46,19 +45,35 @@
             @method('PUT')
 
             <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
-                        <label>Nombres</label>
-                        <input type="text" id="nombres_usuario" name="nombres_usuario" class="form-control" value="{{$usuario->nombres_usuario}}" required>
+                        <label>Primer Nombre</label>
+                        <input type="text" id="primer_nombre_usuario" name="primer_nombre_usuario" maxlength="30" class="form-control" value="{{ $usuario->primer_nombre_usuario }}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <div class="form-group form-group-default required ">
-                        <label>Apellidos</label>
-                        <input type="text" id="apellidos_usuario" name="apellidos_usuario" class="form-control" value="{{$usuario->apellidos_usuario}}" required>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default ">
+                        <label>Segundo Nombre</label>
+                        <input type="text" id="segundo_nombre_usuario" name="segundo_nombre_usuario" maxlength="30" class="form-control" value="{{ $usuario->segundo_nombre_usuario }}">
                     </div>
                 </div>
-                <div class="col-4">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group form-group-default required ">
+                        <label>Primer Apellido</label>
+                        <input type="text" id="primer_apellido_usuario" name="primer_apellido_usuario" maxlength="30" class="form-control" value="{{ $usuario->primer_apellido_usuario }}" required>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group form-group-default required ">
+                        <label>Segundo Apellido</label>
+                        <input type="text" id="segundo_apellido_usuario" name="segundo_apellido_usuario" maxlength="30" class="form-control" value="{{ $usuario->segundo_apellido_usuario }}" required>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-6">
                     <div class="form-group form-group-default form-group-default-select2 required">
                         <label class="">Departamento</label>
                         <select name="departamento_id" id="departamento_id" class="full-width"
@@ -70,24 +85,24 @@
                         </select>
                     </div>
                 </div>
-            </div>
-            <div class="row">
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Documento</label>
                         <input type="text" id="documento_usuario" name="documento_usuario" class="form-control" value="{{$usuario->documento_usuario}}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
+            </div>
+            <div class="row">
+                <div class="col-md-6">
                     <div class="form-group form-group-default required ">
                         <label>Email</label>
                         <input type="email" id="email" name="email" class="form-control" value="{{$usuario->email}}" required>
                     </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-6">
                     <div class="form-group form-group-default ">
                         <label>Contraseña</label>
-                        <input type="password" class="form-control" id="password" name="password">
+                        <input type="password" class="form-control" id="password" name="password" autocomplete="off">
                     </div>
                 </div>
             </div>
