@@ -163,7 +163,8 @@
                     <div class="w-33 float-left">
                         <label>Firma</label><br>
                         <img src="{{public_path($user->signaturePath)}}" width="200" height="100"  alt=""><br>
-                        <span>{{$user->apellidos_usuario}}<br>{{$user->nombres_usuario}}</span><br>
+                        <span>{{ $user->primer_nombre_usuario }} {{ $user->segundo_nombre_usuario }}</span><br>
+                        <span>{{ $user->primer_apellido_usuario }} {{ $user->segundo_apellido_usuario }}</span><br>
                         <span>{{$user->documento_usuario}}</span><br>
                     </div>
                     @php $width += 30; @endphp

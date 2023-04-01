@@ -111,8 +111,8 @@
                                                     <div class="more-details">
                                                         <div class="more-details-inner">
                                                             <h5 class="semi-bold fs-16">
-                                                                {{ $notification->data['apellidos_usuario'] }}
-                                                                {{ $notification->data['nombres_usuario'] }}
+                                                                {{ $notification->data['primer_apellido_usuario'] }}
+                                                                {{ $notification->data['primer_nombre_usuario'] }}
                                                                 Solicitó tu revision del documento
                                                                 {{ $notification->data['descripcion_documento'] }}
                                                             </h5>
@@ -136,8 +136,8 @@
 
                 </ul>
                 <div class="pull-left p-r-10 fs-14 d-lg-inline-block d-none m-l-20">
-                    <span class="semi-bold">{{ $user->apellidos_usuario }}</span> <span
-                        class="text-color">{{ $user->nombres_usuario }}</span>
+                    <span class="semi-bold">{{ $user->primer_apellido_usuario }}</span> <span
+                        class="text-color">{{ $user->primer_nombre_usuario }}</span>
                 </div>
                 <div class="dropdown pull-right d-lg-block d-none">
                     <button class="profile-dropdown-toggle" type="button" data-toggle="dropdown"
@@ -151,7 +151,7 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
                         <a href="#" class="dropdown-item"><span>Signed in as
-                                <br /><b>{{ $user->nombres_usuario }} {{ $user->apellidos_usuario }}</b></span></a>
+                                <br /><b>{{ $user->primer_apellido_usuario }} {{ $user->primer_nombre_usuario }}</b></span></a>
                         <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">Perfil</a>
                         <div class="dropdown-divider"></div>

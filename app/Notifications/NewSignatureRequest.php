@@ -44,8 +44,10 @@ class NewSignatureRequest extends Notification
     public function toArray($notifiable)
     {
         return [
-            'nombres_usuario'  => $this->user->nombres_usuario,
-            'apellidos_usuario' => $this->user->apellidos_usuario,
+            'primer_nombre_usuario' => $this->user->primer_nombre_usuario,
+            'segundo_nombre_usuario' => $this->user->segundo_nombre_usuario,
+            'primer_apellido_usuario' => $this->user->primer_apellido_usuario,
+            'segundo_apellido_usuario' => $this->user->segundo_apellido_usuario,
             'email' => $this->user->email,
             'departamento' => $this->user->departamento->nombre_departamento,
             'descripcion_documento' => $this->document->descripcion_documento,

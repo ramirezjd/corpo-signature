@@ -164,8 +164,10 @@ class UserController extends Controller
 
         $user = User::findOrFail($id);
 
-        $user->nombres_usuario = request('nombres_usuario');
-        $user->apellidos_usuario = request('apellidos_usuario');
+        $user->primer_nombre_usuario = request('primer_nombre_usuario');
+        $user->segundo_nombre_usuario = request('segundo_nombre_usuario');
+        $user->primer_apellido_usuario = request('primer_apellido_usuario');
+        $user->segundo_apellido_usuario = request('segundo_apellido_usuario');
         $user->departamento_id = request('departamento_id');
         $user->documento_usuario = request('documento_usuario');
         $user->email = request('email');

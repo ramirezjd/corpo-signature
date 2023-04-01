@@ -55,8 +55,8 @@
                         <select name="id_usuarios" id="id_usuarios" class="full-width"
                             data-placeholder="Seleccione firmantes" data-init-plugin="select2" multiple="multiple">
                             @foreach ($users as $user)
-                                <option value="{{ $user->id }}">{{ $user->nombres_usuario }}
-                                    {{ $user->apellidos_usuario }}</option>
+                                <option value="{{ $user->id }}">{{ $user->primer_nombre_usuario }} {{ $user->segundo_nombre_usuario }} {{ $user->primer_apellido_usuario }} {{ $user->segundo_apellido_usuario }}
+                                    </option>
                             @endforeach
                         </select>
                         <input type="text" hidden class="d-none" id="usersarray" name="usersarray">

@@ -27,8 +27,8 @@
                         <tbody>
                             @foreach ($notificaciones as $notificacion)
                             <tr>
-                                <td class="v-align-middle semi-bold"> {{ $notificacion->data['apellidos_usuario'] }}
-                                  {{ $notificacion->data['nombres_usuario'] }}
+                                <td class="v-align-middle semi-bold"> {{ $notificacion->data['primer_apellido_usuario'] }}
+                                  {{ $notificacion->data['primer_nombre_usuario'] }}
                                   Solicitó tu revision del documento
                                   <a href="/documentos/{{$notificacion->data['documento_id'] }}">{{ $notificacion->data['descripcion_documento'] }}</a> </td>
                                   <td class="v-align-middle semi-bold"> {{ $notificacion->created_at }} </td>
