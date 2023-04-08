@@ -8,6 +8,9 @@ use App\Models\Departamento;
 use App\Models\Firma;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class UserController extends Controller
 {
@@ -34,9 +37,21 @@ class UserController extends Controller
      */
     public function create()
     {
-        $departamentos = Departamento::all();
+        $user = User::findOrFail(Auth::id());
+        $permissions = Permission::all();
+        $roles = Role::all()->except(1);
+        
+        if($user->hasRole('super-admin')){
+            $departamentos = Departamento::all()->except(1);
+        }
+        else{
+            $departamentos = Departamento::where('id', $user->departamento->id)->get();
+        }
+
         return view('users.create', [
             'departamentos' => $departamentos,
+            'permissions' => $permissions,
+            'roles' => $roles,
             'root' => 'Usuarios',
             'page' => 'Crear',
         ]);
@@ -50,6 +65,8 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        $rol = role::findOrFail(request('roles'));
+        
         $request->validate([
             'primer_nombre_usuario' => 'required|max:30',
             'segundo_nombre_usuario' => 'required|max:30',
@@ -59,6 +76,8 @@ class UserController extends Controller
             'documento_usuario' => 'required|max:16',
             'email' => 'required|email:rfc',
             'password' => 'required',
+            'roles' => 'required',
+            'permissions' => 'required',
             'signed' => 'required_without:signatureFile',
             'signatureFile' => 'required_without:signed|mimes:png,jpg,jpeg|max:2048'
         ]);
@@ -70,6 +89,8 @@ class UserController extends Controller
             'segundo_apellido_usuario' => request('segundo_apellido_usuario'),
             'departamento_id' => request('departamento_id'),
             'email' => request('email'),
+            'rol' => $rol->id,
+            'roleName' => $rol->name,
             'password' => Hash::make(request('password')),
             'documento_usuario' => request('documento_usuario'),
         ]);
@@ -99,6 +120,11 @@ class UserController extends Controller
         $firma->update([
             'img_path' => $signaturePath,
         ]);
+
+        $permissions_array = $request->get('permissions');
+        for($i=0; $i < count($permissions_array); $i++){
+            $user->givePermissionTo($permissions_array[$i]);
+        }
         
         return redirect('/usuarios');
     }
@@ -114,11 +140,22 @@ class UserController extends Controller
         $user = User::findOrFail($id);
         $firma = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
         $signaturePath = Storage::url($firma->img_path);
+        $permissions = Permission::all();
+        $aspermissions = $user->getDirectPermissions();
+        $arraypermisos = [];
+        $count = 0;
+        foreach ($aspermissions as $permiso){
+            $arraypermisos[$count] = $permiso->id;
+            $count++;
+        }
         return view('users.show', [
             'root' => 'Usuarios',
             'page' => 'Ver',
             'usuario' => $user,
             'signaturePath' => $signaturePath,
+            'permissions' => $permissions,
+            'arraypermisos' => $arraypermisos,
+            'alength' => count($arraypermisos),
         ]);
     }
 
@@ -134,12 +171,33 @@ class UserController extends Controller
         $firma = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
         $signaturePath = Storage::url($firma->img_path);
         $departamentos = Departamento::all();
+
+        $permissions = Permission::all();
+        $roles = Role::all()->except(1);
+        if($user->hasRole('super-admin')){
+            $departamentos = Departamento::all()->except(1);
+        }
+        else{
+            $departamentos = Departamento::where('id', $user->departamento_id)->get();
+        }
+        $aspermissions = $user->getDirectPermissions();
+        $arraypermisos = [];
+        $count = 0;
+        foreach ($aspermissions as $permiso){
+            $arraypermisos[$count] = $permiso->id;
+            $count++;
+        }
         return view('users.edit', [
             'root' => 'Usuarios',
             'page' => 'Ver',
             'usuario' => $user,
             'signaturePath' => $signaturePath,
             'departamentos' => $departamentos,
+            'roles' => $roles,
+            'permissions' => $permissions,
+            'arraypermisos' => $arraypermisos,
+            'alength' => count($arraypermisos),
+            'role_id' => $user->rol,
         ]);
     }
 
@@ -160,6 +218,8 @@ class UserController extends Controller
             'departamento_id' => 'required',
             'documento_usuario' => 'required|max:16',
             'email' => 'required|email:rfc',
+            'roles' => 'required',
+            'permissions' => 'required',
         ]);
 
         $user = User::findOrFail($id);
@@ -198,11 +258,24 @@ class UserController extends Controller
             $firma->update([
                 'img_path' => $signaturePath,
             ]);
-        } 
+        }
 
-        $user->save();
+        $permissions = Permission::all();
+        $rol = role::findOrFail($request->get('roles'));
+        $user->roleName = $rol->name;
+        $user->rol = $request->get('roles');
 
+        foreach ($permissions as $permission){
+            if($user->hasPermissionTo($permission->id)){
+                $user->revokePermissionTo($permission->name);
+            }
+        }
+        $permissions_array = $request->get('permissions');
+        for($i=0; $i < count($permissions_array); $i++){
+            $user->givePermissionTo($permissions_array[$i]);
+        }
         
+        $user->save();
         return redirect('/usuarios');
     }
 

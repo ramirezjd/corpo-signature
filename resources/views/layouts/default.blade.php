@@ -153,6 +153,8 @@
                         <a href="#" class="dropdown-item"><span>Signed in as
                                 <br /><b>{{ $user->primer_apellido_usuario }} {{ $user->primer_nombre_usuario }}</b></span></a>
                         <div class="dropdown-divider"></div>
+                            <a href="#" class="dropdown-item"><span>{{$user->roleName}}</span></a>                        
+                        <div class="dropdown-divider"></div>
                         <a href="#" class="dropdown-item">Perfil</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="{{ route('logout') }}"
