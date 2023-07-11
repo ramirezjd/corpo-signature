@@ -13,7 +13,9 @@
                 <h1>Gestión de Documentos</h1>
             </div>
             <div class="col-4 text-right my-auto">
+                @can('crear documento')
                 <a class="btn btn-primary btn-lg btn-larger" href="/documentos/create">Crear Documento</a>
+                @endcan
             </div>
         </div>
 
@@ -43,15 +45,21 @@
                                 <td class="v-align-middle semi-bold text-center "> {{ $documento->aprobados }} </td>
                                 <td class="v-align-middle semi-bold text-center "> {{ $documento->pendientes }} </td>
                                 <td class="v-align-middle d-flex">
+                                    @can('previsualizar documento')
                                     <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="/documentos/{{ $documento->id }}"><i class="pg-icon">eye</i></a>
+                                    @endcan
                                     @if ($documento->aprobado && $role == "revisor")
                                         <button class="btn btn-success  mr-1 px-1"><i class="pg-icon">tick_circle</i></button>
                                     @endif
                                     @if (!$documento->aprobado && $role == "revisor")
-                                        <a class="btn btn-success  mr-1 px-1" href="/documentos/{{ $documento->id }}/approve"><i class="pg-icon">tick</i></a>    
+                                        @can('firmar documento')
+                                        <a class="btn btn-success  mr-1 px-1" href="/documentos/{{ $documento->id }}/approve"><i class="pg-icon">tick</i></a>
+                                        @endcan
                                     @endif
                                     @if ($documento->descargar)
+                                        @can('descargar documento')
                                         <a class="btn btn-success  mr-1 px-1" href="/documentos/{{ $documento->id }}/download"><i class="pg-icon">download_alt</i></a>
+                                        @endcan
                                     @endif
                                 </td>
                             </tr>

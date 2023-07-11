@@ -6,6 +6,7 @@ use App\Models\Departamento;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DepartamentoController extends Controller
 {
@@ -176,6 +177,16 @@ class DepartamentoController extends Controller
             ]);
         }
         $departamento = Departamento::findOrFail($id);
+        $users = count($departamento->users);
+        $validator = Validator::make(["users" => $users], [
+            'users' => 'max:0',
+        ], [
+            'users.max' => "Aun existen usuarios asignados al departamento $departamento->nombre_departamento, asignelos a un departamento diferente",
+        ]);
+        if ($users > 0) {
+            return redirect('/departamentos')->withErrors($validator);
+        }
+
         $departamento->delete();
         return redirect('/departamentos');
     }

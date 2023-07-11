@@ -3,12 +3,24 @@
 
 @section('content')
     <div class="container">
+        @if ($errors->any())
+            <div class="alert alert-danger">
+                <strong>Vaya!</strong> Parece que tenemos problemas al intentar ejecutar la acción!.<br><br>
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
         <div class="row mb-3">
             <div class="col-lg-8 margin-tb my-auto">
                 <h1>Gestión de Departamentos</h1>
             </div>
             <div class="col-4 text-right my-auto">
+                @can('crear departamento')
                 <a class="btn btn-primary btn-lg btn-larger" href="/departamentos/create">Crear Departamento</a>
+                @endcan
             </div>
         </div>
 
@@ -31,13 +43,21 @@
                                     <td class="v-align-middle"> {{ $departamento->codigo_departamento }} </td>
                                     <td class="v-align-middle semi-bold"> {{ $departamento->descripcion_departamento }} </td>
                                     <td class="v-align-middle d-flex">
+                                        @can('ver departamento')
                                         <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="departamentos/{{ $departamento->id }}"><i class="pg-icon">eye</i></a>
+                                        @endcan
+
+                                        @can('editar departamento')
                                         <a class="btn btn-primary btn-icon-center text-white mr-1 px-1" href="departamentos/{{ $departamento->id }}/edit"><i class="pg-icon">edit</i></a>
+                                        @endcan
+
+                                        @can('borrar departamento')
                                         <form action="/departamentos/{{ $departamento->id }}" method="POST" role="form">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger btn-icon-center text-white px-1" type="submit"><i class="pg-icon">trash</i></button>
                                         </form>
+                                        @endcan
                                     </td>
                                     
                     

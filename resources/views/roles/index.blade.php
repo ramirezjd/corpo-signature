@@ -17,7 +17,9 @@
                 <h1>Gestión de Roles</h1>
             </div>
             <div class="col-4 text-right my-auto">
+                @can('crear roles')
                 <a class="btn btn-primary btn-lg btn-larger" href="/roles/create">Crear Rol</a>
+                @endcan
             </div>
         </div>
 
@@ -36,13 +38,21 @@
                                 <tr>
                                     <td class="v-align-middle semi-bold"> {{ $role->name }}  </td>
                                     <td class="v-align-middle d-flex">
+                                        @can('ver roles')
                                         <a class="btn btn-info btn-icon-center text-white mr-1 px-1" href="/roles/{{$role->id}}"><i class="pg-icon">eye</i></a>
+                                        @endcan
+
+                                        @can('editar roles')
                                         <a class="btn btn-primary btn-icon-center text-white mr-1 px-1" href="/roles/{{$role->id}}/edit"><i class="pg-icon">edit</i></a>
+                                        @endcan
+
+                                        @can('borrar roles')
                                         <form action="/roles/{{ $role->id }}" method="POST" role="form">
                                             @csrf
                                             @method('DELETE')
                                             <button class="btn btn-danger btn-icon-center text-white px-1" type="submit"><i class="pg-icon">trash</i></button>
                                         </form>
+                                        @endcan
                                     </td>
                                 </tr>
                             @endforeach

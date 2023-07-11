@@ -39,40 +39,55 @@
         </div>
         <div class="sidebar-menu mt-3">
             <ul class="menu-items">
-                <li class="m-t-10">
-                    <a href="/departamentos" class="">
-                        <span class="title">Departamentos</span>
-                    </a>
-                    <span class="icon-thumbnail"><i data-feather="shield"></i></span>
-                </li>
+                
+                @can('listar departamento')
+                    <li class="m-t-10">
+                        <a href="/departamentos" class="">
+                            <span class="title">Departamentos</span>
+                        </a>
+                        <span class="icon-thumbnail"><i data-feather="shield"></i></span>
+                    </li>
+                @endcan
+                @can('listar usuario')
                 <li class="">
                     <a href="/usuarios"><span class="title">Usuarios</span></a>
                     <span class="icon-thumbnail"><i data-feather="users"></i></span>
                 </li>
+                @endcan
                 <li class="">
+                    @can('listar documento')
                     <a href="javascript:;"><span class="title">Documentos</span>
                         <span class="arrow"></span></a>
                     <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
                     <ul class="sub-menu">
+                        @can('crear documento')
                         <li>
                             <a href="/documentos/solicitante">Creados</a>
                             <span class="icon-thumbnail"><i data-feather="user-plus"></i></span>
 
                         </li>
+                        @endcan
+                        @can('firmar documento')
                         <li>
                             <a href="/documentos/revisor">Revisor</a>
                             <span class="icon-thumbnail"><i data-feather="user-check"></i></span>
                         </li>
+                        @endcan
                     </ul>
+                    @endcan
                 </li>
+                @can('listar cabecera')
                 <li class="">
                     <a href="/cabeceras"><span class="title">Cabeceras</span></a>
                     <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
                 </li>
+                @endcan
+                @can('listar roles')
                 <li class="">
                     <a href="/roles"><span class="title">Roles</span></a>
                     <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
                 </li>
+                @endcan
             </ul>
             <div class="clearfix"></div>
         </div>

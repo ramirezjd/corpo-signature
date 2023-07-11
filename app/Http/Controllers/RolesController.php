@@ -204,8 +204,6 @@ class RolesController extends Controller
         if ($users > 0) {
             return redirect('/roles')->withErrors($validator);
         }
-
-        dd($validator);
         $affected->delete();
         return redirect('/roles');
     }

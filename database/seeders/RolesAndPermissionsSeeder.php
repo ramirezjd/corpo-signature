@@ -25,6 +25,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'editar documento']);
         Permission::create(['name' => 'firmar documento']);
         Permission::create(['name' => 'previsualizar documento']);
+        Permission::create(['name' => 'descargar documento']);
         Permission::create(['name' => 'ver todos documentos']);
 
         //Usuario related

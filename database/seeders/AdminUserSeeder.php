@@ -44,6 +44,7 @@ class AdminUserSeeder extends Seeder
         $user1->givePermissionTo([
             'listar documento',
             'previsualizar documento',
+            'descargar documento',
             'ver todos documentos',
             'listar usuario',
             'ver usuario',
@@ -69,6 +70,7 @@ class AdminUserSeeder extends Seeder
             'listar documento',
             'crear documento',
             'firmar documento',
+            'descargar documento',
             'previsualizar documento',
             'ver usuario'
         ]);
@@ -89,6 +91,7 @@ class AdminUserSeeder extends Seeder
             'listar documento',
             'crear documento',
             'firmar documento',
+            'descargar documento',
             'previsualizar documento',
             'ver usuario'
         ]);
