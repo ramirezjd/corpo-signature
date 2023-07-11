@@ -4,7 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
-use App\User;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 
 class PermissionsController extends Controller
@@ -16,6 +17,13 @@ class PermissionsController extends Controller
      */
     public function index()
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('listar permisos') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Permisos',
+                'page' => '',
+            ]);
+        }
         $permissions = DB::table('permissions')->get();
         $roles = DB::table('roles')->get();
 
@@ -26,30 +34,6 @@ class PermissionsController extends Controller
     }
 
     /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        return view('permissions.create');
-    }
-
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        $ca =  \Carbon\Carbon::now();
-        $ua = \Carbon\Carbon::now();
-        DB::insert('insert into permissions (name, guard_name, created_at, updated_at) values (? , ?, ?, ?)', [$request->name, 'web', $ca, $ua]);
-        return redirect()->route('guias.index');
-    }
-
-    /**
      * Display the specified resource.
      *
      * @param  int  $id
@@ -57,12 +41,26 @@ class PermissionsController extends Controller
      */
     public function show($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('ver permisos') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Permisos',
+                'page' => '',
+            ]);
+        }
         $permissions = DB::table('permissions')->find($id);
         return view('permissions.show', ['permissions' => $permissions]);
     }
 
     public function edit($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar permisos') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Permisos',
+                'page' => '',
+            ]);
+        }
         $permissions = DB::table('permissions')->find($id);
         return view('permissions.edit', ['permissions' => $permissions]);
     }
@@ -76,21 +74,17 @@ class PermissionsController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar permisos') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Permisos',
+                'page' => '',
+            ]);
+        }
         $affected = DB::table('permissions')
               ->where('id', $id)
               ->update(['name' => $request->name]);
 
         return redirect()->route('permissions.index');
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
     }
 }

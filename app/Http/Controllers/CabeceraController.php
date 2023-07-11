@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Cabecera;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Auth;
 
 class CabeceraController extends Controller
 {
@@ -15,6 +17,13 @@ class CabeceraController extends Controller
      */
     public function index()
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('listar cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         $cabeceras = Cabecera::all();
         // $departamentos = Departamento::withTrashed()->get();
         return view('cabeceras.index', [
@@ -31,6 +40,13 @@ class CabeceraController extends Controller
      */
     public function create()
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         return view('cabeceras.create', [
             'root' => 'Cabeceras',
             'page' => 'Crear'
@@ -45,6 +61,13 @@ class CabeceraController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         $request->validate([
             'header_name' => 'required',
             'header_body' => 'required',
@@ -68,6 +91,13 @@ class CabeceraController extends Controller
      */
     public function show($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('ver cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         $header = Cabecera::findOrFail($id);
         $img_url = Storage::url($header->img_path);
         return view('cabeceras.show', [
@@ -86,6 +116,13 @@ class CabeceraController extends Controller
      */
     public function edit($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         $header = Cabecera::findOrFail($id);
         $img_url = Storage::url($header->img_path);
         return view('cabeceras.edit', [
@@ -105,7 +142,13 @@ class CabeceraController extends Controller
      */
     public function update(Request $request, $id)
     {
-
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar cabecera') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Cabeceras',
+                'page' => '',
+            ]);
+        }
         $request->validate([
             'header_name' => 'required',
             'header_body' => 'required',

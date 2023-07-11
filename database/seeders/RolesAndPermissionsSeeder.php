@@ -46,6 +46,20 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::create(['name' => 'ver permisos']);
         Permission::create(['name' => 'editar permisos']);
 
+        //Departamento related
+        Permission::create(['name' => 'listar departamento']);
+        Permission::create(['name' => 'crear departamento']);
+        Permission::create(['name' => 'ver departamento']);
+        Permission::create(['name' => 'editar departamento']);
+        Permission::create(['name' => 'borrar departamento']);
+
+        //Cabecera related
+        Permission::create(['name' => 'listar cabecera']);
+        Permission::create(['name' => 'crear cabecera']);
+        Permission::create(['name' => 'ver cabecera']);
+        Permission::create(['name' => 'editar cabecera']);
+        Permission::create(['name' => 'borrar cabecera']);
+
         $role = Role::create(['name' => 'super-admin']);
         $role->syncPermissions(Permission::all());
         

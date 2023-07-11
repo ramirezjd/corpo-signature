@@ -69,6 +69,10 @@
                     <a href="/cabeceras"><span class="title">Cabeceras</span></a>
                     <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
                 </li>
+                <li class="">
+                    <a href="/roles"><span class="title">Roles</span></a>
+                    <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
+                </li>
             </ul>
             <div class="clearfix"></div>
         </div>
@@ -176,8 +180,8 @@
                     <div class=" container-fluid   container-fixed-lg sm-p-l-0 sm-p-r-0">
                         <div class="inner">
                             <ol class="breadcrumb">
-                                <li class="breadcrumb-item"><a href="#">{{ $root }}</a></li>
-                                <li class="breadcrumb-item active">{{ $page }}</li>
+                                <li class="breadcrumb-item"><a href="#">{{ $root ?? '' }}</a></li>
+                                <li class="breadcrumb-item active">{{ $page ?? '' }}</li>
                             </ol>
                         </div>
                     </div>

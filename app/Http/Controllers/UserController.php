@@ -21,7 +21,20 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('listar usuario') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
+
+        if($user->hasRole('super-admin')){
+            $users = User::all();
+        }
+        else{
+            $users = User::all()->except(1);
+        }
         // $departamentos = Departamento::withTrashed()->get();
         return view('users.index', [
             'root' => 'Usuarios',
@@ -38,6 +51,12 @@ class UserController extends Controller
     public function create()
     {
         $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear usuario') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $permissions = Permission::all();
         $roles = Role::all()->except(1);
         
@@ -66,7 +85,13 @@ class UserController extends Controller
     public function store(Request $request)
     {
         $rol = role::findOrFail(request('roles'));
-        
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear usuario') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $request->validate([
             'primer_nombre_usuario' => 'required|max:30',
             'segundo_nombre_usuario' => 'required|max:30',
@@ -137,6 +162,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('ver usuario') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $user = User::findOrFail($id);
         $firma = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
         $signaturePath = Storage::url($firma->img_path);
@@ -167,6 +199,13 @@ class UserController extends Controller
      */
     public function edit($id)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('editar usuario') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $user = User::findOrFail($id);
         $firma = Firma::where('user_id', $user->id)->orderBy('created_at', 'desc')->first();
         $signaturePath = Storage::url($firma->img_path);
@@ -210,6 +249,13 @@ class UserController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('editar usuario') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $request->validate([
             'primer_nombre_usuario' => 'required|max:30',
             'segundo_nombre_usuario' => 'required|max:30',
@@ -287,6 +333,13 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('borrar usuario') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Usuarios',
+                'page' => '',
+            ]);
+        }
         $user = User::findOrFail($id);
         // $firmas = Firma::where('user_id', $user->id)->get();
         // foreach($firmas as $firma){

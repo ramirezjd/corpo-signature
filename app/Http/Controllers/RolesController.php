@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use DB;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
+use Illuminate\Support\Facades\Validator;
 
 class RolesController extends Controller
 {
@@ -16,10 +19,19 @@ class RolesController extends Controller
      */
     public function index()
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('listar roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $roles = role::all()->except('1');
 
         return view('roles.index', [
             'roles' => $roles,
+            'root' => 'Roles',
+            'page' => '',
         ]);
     }
 
@@ -30,8 +42,19 @@ class RolesController extends Controller
      */
     public function create()
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('crear roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $permissions = Permission::all();
-        return view('roles.create', compact('permissions'));
+        return view('roles.create', [
+            'permissions' => $permissions,
+            'root' => 'Roles',
+            'page' => 'Crear',
+        ]);
     }
 
     /**
@@ -42,19 +65,25 @@ class RolesController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('crear roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $rol = Role::create(['name' => $request->name]);
 
-        if($request->get('permissions')){
+        if ($request->get('permissions')) {
             $permissions_array = $request->get('permissions');
             $max = count($permissions_array);
 
-            for($i=0; $i < $max; $i++){
+            for ($i = 0; $i < $max; $i++) {
                 $permiso = DB::table('permissions')->where('id', '=', $permissions_array[$i])->first();
                 $rol->givePermissionTo($permiso->name);
             }
         }
-
-        return redirect()->route('roles.index');
+        return redirect('/roles');
     }
 
     /**
@@ -65,12 +94,21 @@ class RolesController extends Controller
      */
     public function show($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('ver roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $role = role::find($id);
         $permissions = $role->getAllPermissions();
 
         return view('roles.show', [
             'role' => $role,
             'permissions' => $permissions,
+            'root' => 'Roles',
+            'page' => 'Editar',
         ]);
     }
 
@@ -83,12 +121,21 @@ class RolesController extends Controller
 
     public function edit($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('editar roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $role = role::find($id);
         $permissions = permission::all();
 
         return view('roles.edit', [
             'role' => $role,
             'permissions' => $permissions,
+            'root' => 'Roles',
+            'page' => 'Ver',
         ]);
     }
 
@@ -101,28 +148,34 @@ class RolesController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('editar roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $affected = role::find($id);
 
         $affected->update(['name' => $request->name]);
 
         $permissions = Permission::all();
 
-        foreach ($permissions as $permission){
-            if($affected->hasPermissionTo($permission->id)){
+        foreach ($permissions as $permission) {
+            if ($affected->hasPermissionTo($permission->id)) {
                 $affected->revokePermissionTo($permission->name);
             }
         }
 
-        if($request->get('permissions')){
+        if ($request->get('permissions')) {
             $permissions_array = $request->get('permissions');
             $max = count($permissions_array);
 
-            for($i=0; $i < $max; $i++){
+            for ($i = 0; $i < $max; $i++) {
                 $affected->givePermissionTo($permissions_array[$i]);
             }
         }
-
-        return redirect()->route('roles.index');
+        return redirect('/roles');
     }
 
     /**
@@ -133,12 +186,32 @@ class RolesController extends Controller
      */
     public function destroy($id)
     {
+        $users = User::where('rol', $id)->count();
+        $user = User::findOrFail(Auth::id());
+        if (!$user->can('borrar roles') && !$user->hasRole('super-admin')) {
+            return view('auth.unauthorized', [
+                'root' => 'Roles',
+                'page' => '',
+            ]);
+        }
         $affected = role::find($id);
+        
+        $validator = Validator::make(["users" => $users], [
+            'users' => 'max:0',
+        ], [
+            'users.max' => "Aun existen usuarios con el rol $affected->name",
+        ]);
+        if ($users > 0) {
+            return redirect('/roles')->withErrors($validator);
+        }
+
+        dd($validator);
         $affected->delete();
-        return redirect()->route('roles.index');
+        return redirect('/roles');
     }
 
-    public function getpermissions(Request $request){
+    public function getpermissions(Request $request)
+    {
         $id = $request->id;
         $role = role::find($id);
         return $role->getAllPermissions();
