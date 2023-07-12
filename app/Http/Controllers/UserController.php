@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Auth;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
+use Illuminate\Validation\Rules\Password;
 
 class UserController extends Controller
 {
@@ -362,8 +363,12 @@ class UserController extends Controller
     public function changePassword(Request $request, $id)
     {
         $request->validate([
-            'password' => 'required|max:30',
-            'password-repeat' => 'required|max:30|same:password',
+            'password' => ['required', 'confirmed', Password::min(8)
+            ->letters()
+            ->mixedCase()
+            ->numbers()
+            ->symbols()
+            ->uncompromised()],
         ]);
 
         $user = User::findOrFail($id);

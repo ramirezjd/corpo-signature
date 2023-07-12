@@ -6,7 +6,7 @@
 </head>
 <style type="text/css">
     body {
-        font-family: 'Roboto Condensed', sans-serif;
+        font-family: sans-serif;
     }
 
     .m-0 {
@@ -130,6 +130,12 @@
     .total-right p {
         padding-right: 20px;
     }
+
+    .ql-align-center { text-align:  center; }
+    .ql-align-right { text-align:  right; }
+    .ql-align-justify { text-align: justify; }
+    .ql-font-serif{ font-family: serif; }
+    .ql-font-monospace{ font-family: monospace; }
 </style>
 
 <body>

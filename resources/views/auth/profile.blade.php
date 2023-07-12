@@ -42,7 +42,7 @@
                 <div class="col-md-6">
                     <div class="form-group form-group-default ">
                         <label>Repetir Contraseña</label>
-                        <input type="password" class="form-control" id="password-repeat" name="password-repeat" autocomplete="off">
+                        <input type="password" class="form-control" id="password_confirmation" name="password_confirmation" autocomplete="off">
                     </div>
                 </div>
             </div>
