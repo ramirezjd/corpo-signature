@@ -21,6 +21,8 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [App\Http\Controllers\UserController::class, 'profile'])->name('perfil');
+
     Route::controller(App\Http\Controllers\RolesController::class)->group(function () {
         Route::get('/roles', 'index');
         Route::get('/roles/create', 'create');
@@ -56,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/usuarios/{id}', 'show');
         Route::get('/usuarios/{id}/edit', 'edit');
         Route::put('/usuarios/{id}', 'update');
+        Route::put('/usuarios/{id}/change-password', 'changePassword');
         Route::delete('/usuarios/{id}', 'destroy');
     });
 

@@ -348,4 +348,28 @@ class UserController extends Controller
         $user->delete();
         return redirect('/usuarios');
     }
+
+    public function profile()
+    {
+        $user = User::findOrFail(Auth::id());        
+        return view('auth.profile', [
+            'root' => 'Usuario',
+            'page' => 'Perfil',
+            'usuario' => $user,
+        ]);
+    }
+
+    public function changePassword(Request $request, $id)
+    {
+        $request->validate([
+            'password' => 'required|max:30',
+            'password-repeat' => 'required|max:30|same:password',
+        ]);
+
+        $user = User::findOrFail($id);
+        $user->password = Hash::make(request('password'));
+                
+        $user->save();
+        return redirect('/perfil');
+    }
 }
