@@ -3,20 +3,26 @@
 
 <head>
     <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
+    <meta name="viewport"
+        content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, shrink-to-fit=no" />
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'Corposalud') }}</title>
-    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ asset('assets/plugins/select2/css/select2.min.css') }}" rel="stylesheet" type="text/css"
+        media="screen" />
     <link href="{{ asset('assets/plugins/pace/pace-theme-flash.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/bootstrap/css/bootstrap.min.css') }}" rel="stylesheet" type="text/css" />
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}" rel="stylesheet" type="text/css" media="screen" />
+    <link href="{{ asset('assets/plugins/jquery-scrollbar/jquery.scrollbar.css') }}" rel="stylesheet" type="text/css"
+        media="screen" />
     <script src="{{ asset('assets/plugins/jquery/jquery-3.2.1.min.js') }}" type="text/javascript"></script>
     <link href="{{ asset('assets/plugins/bootstrap-tag/bootstrap-tagsinput.css') }}" rel="stylesheet" type="text/css" />
     <link href="{{ asset('assets/plugins/dropzone/css/dropzone.css') }}" rel="stylesheet" type="text/css" />
-    <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet" type="text/css" media="screen">
-    <link href="{{ asset('assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet" type="text/css" media="screen">
-    <link href="{{ asset('assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet" type="text/css" media="screen">
+    <link href="{{ asset('assets/plugins/bootstrap-datepicker/css/datepicker3.css') }}" rel="stylesheet"
+        type="text/css" media="screen">
+    <link href="{{ asset('assets/plugins/bootstrap-daterangepicker/daterangepicker-bs3.css') }}" rel="stylesheet"
+        type="text/css" media="screen">
+    <link href="{{ asset('assets/plugins/bootstrap-timepicker/bootstrap-timepicker.min.css') }}" rel="stylesheet"
+        type="text/css" media="screen">
     <link class="main-stylesheet" href="{{ asset('pages/css/themes/light.css') }}" rel="stylesheet" type="text/css" />
     <style>
         .icon-thumbnail {
@@ -30,7 +36,16 @@
 </head>
 
 <body class="fixed-header menu-pin">
-    <?php $user = Auth::user(); ?>
+    <?php
+    $user = Auth::user();
+    $showBubble = false;
+    $notificationArray = $user->unreadNotifications->take(7);
+    foreach ($notificationArray as $noti) {
+        if ($noti->read_at === null) {
+            $showBubble = true;
+        }
+    }
+    ?>
     <nav class="page-sidebar" data-pages="sidebar">
         <div class="sidebar-header">
             <img src="{{ asset('assets/img/logo.png') }}" alt="logo" class="brand"
@@ -39,7 +54,7 @@
         </div>
         <div class="sidebar-menu mt-3">
             <ul class="menu-items">
-                
+
                 @can('listar departamento')
                     <li class="m-t-10">
                         <a href="/departamentos" class="">
@@ -49,44 +64,44 @@
                     </li>
                 @endcan
                 @can('listar usuario')
-                <li class="">
-                    <a href="/usuarios"><span class="title">Usuarios</span></a>
-                    <span class="icon-thumbnail"><i data-feather="users"></i></span>
-                </li>
+                    <li class="">
+                        <a href="/usuarios"><span class="title">Usuarios</span></a>
+                        <span class="icon-thumbnail"><i data-feather="users"></i></span>
+                    </li>
                 @endcan
                 <li class="">
                     @can('listar documento')
-                    <a href="javascript:;"><span class="title">Documentos</span>
-                        <span class="arrow"></span></a>
-                    <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
-                    <ul class="sub-menu">
-                        @can('crear documento')
-                        <li>
-                            <a href="/documentos/solicitante">Creados</a>
-                            <span class="icon-thumbnail"><i data-feather="user-plus"></i></span>
+                        <a href="javascript:;"><span class="title">Documentos</span>
+                            <span class="arrow"></span></a>
+                        <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
+                        <ul class="sub-menu">
+                            @can('crear documento')
+                                <li>
+                                    <a href="/documentos/solicitante">Creados</a>
+                                    <span class="icon-thumbnail"><i data-feather="user-plus"></i></span>
 
-                        </li>
-                        @endcan
-                        @can('firmar documento')
-                        <li>
-                            <a href="/documentos/revisor">Revisor</a>
-                            <span class="icon-thumbnail"><i data-feather="user-check"></i></span>
-                        </li>
-                        @endcan
-                    </ul>
+                                </li>
+                            @endcan
+                            @can('firmar documento')
+                                <li>
+                                    <a href="/documentos/revisor">Revisor</a>
+                                    <span class="icon-thumbnail"><i data-feather="user-check"></i></span>
+                                </li>
+                            @endcan
+                        </ul>
                     @endcan
                 </li>
                 @can('listar cabecera')
-                <li class="">
-                    <a href="/cabeceras"><span class="title">Cabeceras</span></a>
-                    <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
-                </li>
+                    <li class="">
+                        <a href="/cabeceras"><span class="title">Cabeceras</span></a>
+                        <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
+                    </li>
                 @endcan
                 @can('listar roles')
-                <li class="">
-                    <a href="/roles"><span class="title">Roles</span></a>
-                    <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
-                </li>
+                    <li class="">
+                        <a href="/roles"><span class="title">Roles</span></a>
+                        <span class="icon-thumbnail"><i data-feather="file-text"></i></span>
+                    </li>
                 @endcan
             </ul>
             <div class="clearfix"></div>
@@ -95,7 +110,8 @@
 
     <div class="page-container ">
         <div class="header ">
-            <a href="#" class="btn-link toggle-sidebar d-lg-none  pg-icon btn-icon-link" data-toggle="sidebar">menu</a>
+            <a href="#" class="btn-link toggle-sidebar d-lg-none  pg-icon btn-icon-link"
+                data-toggle="sidebar">menu</a>
             <div class=""></div>
             <div class="d-flex align-items-center">
                 <ul
@@ -105,14 +121,17 @@
                             <a href="javascript:;" id="notification-center" class="header-icon btn-icon-link"
                                 data-toggle="dropdown">
                                 <i class="pg-icon">world</i>
-                                <span class="bubble"></span>
+                                @if ($showBubble)
+                                    <span id="notification-bubble" class="bubble"></span>
+                                @endif
                             </a>
                             <div class="dropdown-menu notification-toggle" role="menu"
                                 aria-labelledby="notification-center">
                                 <div class="notification-panel">
                                     <div class="notification-body scrollable">
-                                        @foreach ($user->notifications as $notification)
-                                            <div class="notification-item unread clearfix">
+                                        @foreach ($notificationArray as $notification)
+                                            <div class="notification-item unread clearfix"
+                                                id="{{ $notification->id }}">
                                                 <div class="heading ">
                                                     <a href="#"
                                                         class="text-complete pull-left d-flex align-items-center">
@@ -139,8 +158,9 @@
                                                     </div>
                                                 </div>
                                                 <div class="option" data-toggle="tooltip" data-placement="left"
-                                                    title="mark as read">
-                                                    <a href="#" class="mark"></a>
+                                                    title="mark as read" id="tooltip-{{ $notification->id }}">
+                                                    <a href="#" class="mark"
+                                                        data-notification-id="{{ $notification->id }}"></a>
                                                 </div>
                                             </div>
                                         @endforeach
@@ -170,9 +190,10 @@
                     </button>
                     <div class="dropdown-menu dropdown-menu-right profile-dropdown" role="menu">
                         <a href="#" class="dropdown-item"><span>Signed in as
-                                <br /><b>{{ $user->primer_apellido_usuario }} {{ $user->primer_nombre_usuario }}</b></span></a>
+                                <br /><b>{{ $user->primer_apellido_usuario }}
+                                    {{ $user->primer_nombre_usuario }}</b></span></a>
                         <div class="dropdown-divider"></div>
-                            <a href="#" class="dropdown-item"><span>{{$user->roleName}}</span></a>                        
+                        <a href="#" class="dropdown-item"><span>{{ $user->roleName }}</span></a>
                         <div class="dropdown-divider"></div>
                         <a href="/perfil" class="dropdown-item">Perfil</a>
                         <div class="dropdown-divider"></div>
@@ -208,6 +229,44 @@
         </div>
     </div>
 
+    <script type="text/javascript">
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+            }
+        })
+
+        $(document).ready(function() {
+
+            $(".mark").click(function() {
+                var item = $(this);
+                var id = item.attr("data-notification-id");
+                var tootipId = $("#tooltip-" + id).attr("aria-describedby");
+                $.ajax({
+                    url: "/notificaciones/read",
+                    method: "POST",
+                    data: {
+                        "id": id
+                    },
+                    dataType: "json",
+                    success: function(data) {
+                        var items = $('.notification-item');
+                        var itemsNumber = items.length - 1;
+                        if (itemsNumber === 0) {
+                            $("#notification-bubble").addClass('d-none');
+                        }
+                        console.log('dataOk', data);
+                        $("#" + id).remove();
+                        $("#" + tootipId).remove();
+                    },
+                    error: function(data) {
+                        console.log('fail', data);
+                    }
+                });
+            });
+
+        });
+    </script>
 
     <script src="{{ asset('assets/plugins/feather-icons/feather.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/pace/pace.min.js ') }}" type="text/javascript"></script>
@@ -227,9 +286,12 @@
     <script src="{{ asset('assets/plugins/jquery-autonumeric/autoNumeric.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/bootstrap-tag/bootstrap-tagsinput.min.js') }}" type="text/javascript"></script>
     <script src="{{ asset('assets/plugins/jquery-inputmask/jquery.inputmask.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript"></script>
-    <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/bootstrap-form-wizard/js/jquery.bootstrap.wizard.min.js') }}"
+        type="text/javascript"></script>
+    <script src="{{ asset('assets/plugins/jquery-validation/js/jquery.validate.min.js') }}" type="text/javascript">
+    </script>
+    <script src="{{ asset('assets/plugins/bootstrap-datepicker/js/bootstrap-datepicker.js') }}" type="text/javascript">
+    </script>
     <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.bundle.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/bootstrap-typehead/typeahead.jquery.min.js') }}"></script>
     <script src="{{ asset('assets/plugins/handlebars/handlebars-v4.0.5.js') }}"></script>

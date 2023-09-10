@@ -88,5 +88,7 @@ Route::middleware(['auth'])->group(function () {
 
     Route::controller(App\Http\Controllers\NotificationsController::class)->group(function () {
         Route::get('/notificaciones', 'index');
+        Route::post('/notificaciones/read', 'markRead');
+        Route::get('/notificaciones/readall', 'readAll');
     });
 });
