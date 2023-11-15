@@ -22,7 +22,8 @@ class CreateUsersTable extends Migration
             $table->string('segundo_apellido_usuario', 30);
             $table->string('documento_usuario', 16);
             $table->string('email')->unique();
-            $table->string('base64')->nullable();
+            $table->bigInteger('rol');
+            $table->string('roleName');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->rememberToken();

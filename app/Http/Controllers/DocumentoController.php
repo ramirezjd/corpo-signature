@@ -23,6 +23,13 @@ class DocumentoController extends Controller
      */
     public function index()
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('listar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         return redirect('/documentos/solicitante');
         
         // $currentUser = Auth::user();
@@ -79,7 +86,13 @@ class DocumentoController extends Controller
 
     public function solicitante()
     {
-        $currentUser = Auth::user();
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('listar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         
         $docsSolicitante = $currentUser->documentosSolicitante->sortByDesc('created_at');
         foreach ($docsSolicitante as $documento) {
@@ -110,7 +123,13 @@ class DocumentoController extends Controller
 
     public function revisor()
     {
-        $currentUser = Auth::user();
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('listar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         
         $docsRevisor = $currentUser->documentosRevisor->sortByDesc('created_at');
         foreach ($docsRevisor as $documento) {
@@ -153,6 +172,14 @@ class DocumentoController extends Controller
      */
     public function create()
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('crear documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
+
         $users = User::all();
         $cabeceras = Cabecera::all();
         return view('documentos.create', [
@@ -171,6 +198,14 @@ class DocumentoController extends Controller
      */
     public function store(Request $request)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('crear documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
+
         $request->validate([
             'usersarray' => 'required',
             'document_body' => 'required',
@@ -227,7 +262,14 @@ class DocumentoController extends Controller
      */
     public function show($id)
     {
-        $currentUser = Auth::user();
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('ver documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
+
         $counting = UsuariosPorDocumento::where('documento_id', $id)->where('user_id', $currentUser->id)->count();
         if($counting === 0){
             return redirect('/documentos');
@@ -303,6 +345,13 @@ class DocumentoController extends Controller
      */
     public function edit($id)
     {
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('editar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         $users = User::all();
         $cabeceras = Cabecera::all();
         $documento = Documento::findOrFail($id);
@@ -332,7 +381,13 @@ class DocumentoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('editar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
     }
 
     /**
@@ -348,7 +403,13 @@ class DocumentoController extends Controller
 
     public function downloadPdf($id)
     {
-        $currentUser = Auth::user();
+        $currentUser = User::findOrFail(Auth::id());
+        if(!($currentUser->can('crear documento') || $currentUser->can('firmar documento')) && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         $counting = UsuariosPorDocumento::where('documento_id', $id)->where('user_id', $currentUser->id)->count();
         if($counting === 0){
             return redirect('/documentos');
@@ -382,7 +443,13 @@ class DocumentoController extends Controller
 
     public function approve($id)
     {
-        $currentUser = Auth::user();
+        $currentUser = User::findOrFail(Auth::id());
+        if(!$currentUser->can('firmar documento') && !$currentUser->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Documentos',
+                'page' => '',
+            ]);
+        }
         $documento = Documento::findOrFail($id);
         $approvalItem = UsuariosPorDocumento::where("user_id", $currentUser->id)->where("documento_id", $documento->id)->where("condicion", "revisor")->first();
         $approvalItem['aprobacion'] = 1;

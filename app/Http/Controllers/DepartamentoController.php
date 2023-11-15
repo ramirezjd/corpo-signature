@@ -3,7 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Departamento;
+use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Validator;
 
 class DepartamentoController extends Controller
 {
@@ -14,6 +17,14 @@ class DepartamentoController extends Controller
      */
     public function index()
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('listar departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
+        
         $departamentos = Departamento::all();
         // $departamentos = Departamento::withTrashed()->get();
         return view('departamentos.index', [
@@ -30,6 +41,14 @@ class DepartamentoController extends Controller
      */
     public function create()
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
+        
         return view('departamentos.create', [
             'root' => 'Departamentos',
             'page' => 'Crear',
@@ -44,6 +63,13 @@ class DepartamentoController extends Controller
      */
     public function store(Request $request)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('crear departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
         $request->validate([
             'nombre_departamento' => 'bail|required',
         ]);
@@ -66,6 +92,13 @@ class DepartamentoController extends Controller
      */
     public function show($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('ver departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
         $departamento = Departamento::findOrFail($id);
         return view('departamentos.show', [
             'root' => 'Departamentos',
@@ -82,6 +115,13 @@ class DepartamentoController extends Controller
      */
     public function edit($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
         $departamento = Departamento::findOrFail($id);
         return view('departamentos.edit', [
             'root' => 'Departamentos',
@@ -99,6 +139,13 @@ class DepartamentoController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('editar departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
         $departamento = Departamento::findOrFail($id);
         
         $request->validate([
@@ -122,7 +169,24 @@ class DepartamentoController extends Controller
      */
     public function destroy($id)
     {
+        $user = User::findOrFail(Auth::id());
+        if(!$user->can('borrar departamento') && !$user->hasRole('super-admin')){
+            return view('auth.unauthorized', [
+                'root' => 'Departamentos',
+                'page' => '',
+            ]);
+        }
         $departamento = Departamento::findOrFail($id);
+        $users = count($departamento->users);
+        $validator = Validator::make(["users" => $users], [
+            'users' => 'max:0',
+        ], [
+            'users.max' => "Aun existen usuarios asignados al departamento $departamento->nombre_departamento, asignelos a un departamento diferente",
+        ]);
+        if ($users > 0) {
+            return redirect('/departamentos')->withErrors($validator);
+        }
+
         $departamento->delete();
         return redirect('/departamentos');
     }

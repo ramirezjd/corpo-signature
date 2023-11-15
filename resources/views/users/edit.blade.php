@@ -107,6 +107,42 @@
                 </div>
             </div>
 
+            <div class="row">
+                <div class="col-6">
+                    <div class="form-group form-group-default form-group-default-select2 required">
+                        <label class="">Cargo</label>
+                        <select name="roles" id="roles" class="full-width"
+                            data-placeholder="Seleccione un cargo" data-init-plugin="select2" required>
+                            <option value=""></option>
+                            @foreach ($roles as $role)
+                            <div class="col-3">
+                                <option value="{{$role->id}}">{{$role->name}}</option>
+                            </div>
+                            @endforeach
+                        </select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="card card-default">
+                <div class="card-header ">
+                  <div class="card-title">Permisos</div>
+                </div>
+                <div class="card-body">
+                    <div class="row my-3">
+                        @foreach ($permissions as $permission)
+                        <div class="col-md-3 px-2">
+                            <div class="form-check">
+                                <input type="checkbox" id="{{$permission->id}}" name="permissions[]" value="{{$permission->id}}">
+                                <label for="{{$permission->id}}" class="text-capitalize">{{$permission->name}}</label>
+                            </div>
+                        </div>
+                        @endforeach
+                    </div>
+                </div>
+            </div>
+
+
             <div id="currentSignatureRow" class="row ">
                 <div class="col-lg-6">
                     <div class="card card-borderless form-group form-group-default">
@@ -165,7 +201,6 @@
     </div>
 
     <script type="text/javascript">
-        $("#departamento_id").val('{{$usuario->departamento->id}}');
         
         $( document ).ready(function() {
             $('#signatureRow').addClass( "d-none" );
@@ -186,6 +221,41 @@
             $('#currentSignatureRow').removeClass( "d-block" );
         });
 
+    </script>
+
+    <script type="text/javascript">
+        $( document ).ready(function() {
+            var rolesSelect = $('#roles').select2();
+            rolesSelect.val('{{$usuario->rol}}').trigger("change");
+            var departmentSelect = $('#departamento_id').select2();
+            departmentSelect.val('{{$usuario->departamento->id}}').trigger("change");
+
+            @foreach ($arraypermisos as $arraypermiso)
+                $("#{{$arraypermiso}}").prop("checked", true);
+            @endforeach
+
+            $('select#roles').on('change', function(e) {
+                @foreach ($permissions as $permission)
+                    $("#{{$permission->id}}").prop("checked", false);
+                @endforeach
+
+                var id = $('select#roles').val();
+                $.ajax({
+                url:"/getpermissions",
+                method:"GET",
+                data:{"id":id},
+                dataType:"json",
+                success:function(data){
+                    $.each(data, function(i, id) {
+                        $("#"+data[i].id).prop("checked", true);
+                    });
+                },
+                error: function (data) {
+                    console.log('fail', data);
+                }
+                });
+            });
+        });
     </script>
 
 @endsection

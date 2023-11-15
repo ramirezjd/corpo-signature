@@ -9,8 +9,11 @@
     <?php $user = Auth::user(); ?>
     <div class="container">
         <div class="row mb-3">
-            <div class="col-12 margin-tb my-auto">
+            <div class="col-lg-8 margin-tb my-auto">
                 <h1>Notificaciones</h1>
+            </div>
+            <div class="col-4 text-right my-auto">
+                <a class="btn btn-primary btn-lg btn-larger" href="/notificaciones/readall">Marcar todas leidas</a>
             </div>
         </div>
 

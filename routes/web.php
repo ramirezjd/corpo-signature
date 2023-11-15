@@ -21,6 +21,26 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/perfil', [App\Http\Controllers\UserController::class, 'profile'])->name('perfil');
+
+    Route::controller(App\Http\Controllers\RolesController::class)->group(function () {
+        Route::get('/roles', 'index');
+        Route::get('/roles/create', 'create');
+        Route::post('/roles', 'store');
+        Route::get('/roles/{id}', 'show');
+        Route::get('/roles/{id}/edit', 'edit');
+        Route::put('/roles/{id}', 'update');
+        Route::delete('/roles/{id}', 'destroy');
+        Route::get('/getpermissions', 'getpermissions');
+    });
+
+    Route::controller(App\Http\Controllers\PermissionsController::class)->group(function () {
+        Route::get('/permisos', 'index');
+        Route::get('/permisos/{id}', 'show');
+        Route::get('/permisos/{id}/edit', 'edit');
+        Route::put('/permisos/{id}', 'update');
+    });
+    
     Route::controller(App\Http\Controllers\DepartamentoController::class)->group(function () {
         Route::get('/departamentos', 'index');
         Route::get('/departamentos/create', 'create');
@@ -38,6 +58,7 @@ Route::middleware(['auth'])->group(function () {
         Route::get('/usuarios/{id}', 'show');
         Route::get('/usuarios/{id}/edit', 'edit');
         Route::put('/usuarios/{id}', 'update');
+        Route::put('/usuarios/{id}/change-password', 'changePassword');
         Route::delete('/usuarios/{id}', 'destroy');
     });
 
@@ -64,8 +85,10 @@ Route::middleware(['auth'])->group(function () {
         Route::put('/cabeceras/{id}', 'update');
         Route::delete('/cabeceras/{id}', 'destroy');
     });
-    
+
     Route::controller(App\Http\Controllers\NotificationsController::class)->group(function () {
         Route::get('/notificaciones', 'index');
+        Route::post('/notificaciones/read', 'markRead');
+        Route::get('/notificaciones/readall', 'readAll');
     });
 });
