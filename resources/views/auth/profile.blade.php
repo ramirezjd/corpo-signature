@@ -28,6 +28,7 @@
             </div>
         </div>
         <p class="m-t-10 m-b-20 mw-80">Si desea cambiar su contraseña por favor llene el siguiente formulario.</p>
+        <p class="m-t-10 m-b-20 mw-80">La contraseña debe contener al menos 8 caracteres, una mayuscula, una minuscula, un número y un símbolo</p>
         <form class="mt-3" action="/usuarios/{{ $usuario->id }}/change-password" method="POST" role="form">
             @csrf
             @method('PUT')

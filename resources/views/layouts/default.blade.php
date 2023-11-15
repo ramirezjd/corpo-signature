@@ -158,7 +158,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="option" data-toggle="tooltip" data-placement="left"
-                                                    title="mark as read" id="tooltip-{{ $notification->id }}">
+                                                    title="Marcar leída" id="tooltip-{{ $notification->id }}">
                                                     <a href="#" class="mark"
                                                         data-notification-id="{{ $notification->id }}"></a>
                                                 </div>
